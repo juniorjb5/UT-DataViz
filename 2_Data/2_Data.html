@@ -1,0 +1,3867 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Data Visualization in R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="PhD. St. Orlando Joaqui-Barandica" />
+    <meta name="date" content="2021-01-01" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies-fonts.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/shareon/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain/shareagain.js"></script>
+    <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
+    <link href="libs/pagedtable/css/pagedtable.css" rel="stylesheet" />
+    <script src="libs/pagedtable/js/pagedtable.js"></script>
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding/datatables.js"></script>
+    <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <script src="libs/core-js/shim.min.js"></script>
+    <script src="libs/react/react.min.js"></script>
+    <script src="libs/react/react-dom.min.js"></script>
+    <script src="libs/reactwidget/react-tools.js"></script>
+    <script src="libs/reactable-binding/reactable.js"></script>
+    <link href="libs/jquery-sparkline/jquery.sparkline.css" rel="stylesheet" />
+    <script src="libs/jquery-sparkline/jquery.sparkline.js"></script>
+    <script src="libs/sparkline-binding/sparkline.js"></script>
+    <link rel="stylesheet" href="sydney.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: inverse, left, bottom
+background-image: url("img/back1.jpg")
+background-size: cover
+
+
+# **Data Visualization in R**
+----
+
+## **&lt;br/&gt; Data preparation &amp; Tables**
+
+### PhD. St. Orlando Joaqui-Barandica
+### 2021
+
+
+
+---
+name: hola
+class: inverse, middle, center
+
+&lt;img style="border-radius: 50%;" src="img/logo.png"
+width="150px"
+/&gt;
+
+# Universidad del Tolima
+
+--
+
+## Diplomado en gestión de datos
+---
+
+
+
+.pull-left[
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;img src="img/gif1.gif" width="110%" /&gt;
+]
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+
+.pull-right[
+# Orlando Joaqui-Barandica
+### [www.joaquibarandica.com](https://www.joaquibarandica.com)
+ *PhD. Student in Industrial Engineering* 
+ 
+ *MSc. Applied Economics*
+ 
+ *BSc. Statistics*
+]
+
+---
+
+name: menu
+background-image: url("img/back2.jpg")
+background-size: cover
+class: left, middle, inverse
+
+# Contenido
+
+----
+
+
+.pull-left[
+### <i class="fa fa-upload" role="presentation" aria-label="upload icon"></i> [Importing DATA](#Data)
+
+### <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> [Cleaning DATA](#Clean)
+
+]
+
+
+.pull-right[
+### <i class="fa fa-table" role="presentation" aria-label="table icon"></i> [Tablas](#Tablas)
+
+### <i class="fa fa-dice-d6" role="presentation" aria-label="dice-d6 icon"></i> [Introducción a ggplot2](#ggplot2)
+
+]
+
+---
+
+name: Data
+class: inverse, center, middle
+
+# <i class="fa fa-upload" role="presentation" aria-label="upload icon"></i>
+# Importing DATA
+----
+
+.right[
+.bottom[
+####  [<i class="fa fa-bell" role="presentation" aria-label="bell icon"></i>](#menu)
+]
+]
+
+---
+
+
+# <i class="fa fa-upload" role="presentation" aria-label="upload icon"></i> Importar Data
+
+
+Antes de que pueda visualizar sus datos, debe ingresarlos en R. Esto implica importar los datos de una fuente externa y manejarlo en un formato útil.
+
+
+
+.pull-left[
+
+R puede importar datos de casi cualquier fuente, incluidos archivos de texto, hojas de cálculo de Excel, paquetes estadísticos y sistemas de administración de bases de datos. Ilustraremos estas técnicas utilizando el conjunto de datos `Salaries`, que contiene los salarios académicos de 9 meses de profesores universitarios en una sola institución en 2008-2009.
+
+
+### Archivos de texto
+
+* El paquete `readr` proporciona funciones para importar archivos de texto delimitados en marcos de datos R.
+
+* Recordar también la función de base `read.csv()`
+
+]
+
+
+.pull-right[
+
+
+
+```r
+library(readr)
+
+# import data from a comma delimited file
+Salaries &lt;- read_csv("salaries.csv")
+
+# import data from a tab delimited file
+Salaries &lt;- read_tsv("salaries.txt")
+```
+
+
+Estas funciones asumen que la primera línea de datos contiene los nombres de las variables, los valores están separados por comas o tabulaciones, respectivamente, y que los datos faltantes están representados por espacios en blanco.
+
+
+]
+
+
+---
+
+
+
+# <i class="fa fa-upload" role="presentation" aria-label="upload icon"></i> Importar Data
+
+
+### Hojas de cálculo de Excel
+
+.pull-left[
+
+El paquete `readxl` puede importar datos de libros de Excel. Se admiten los formatos xls y xlsx.
+
+----
+
+
+```r
+library(readxl)
+
+# import data from an Excel workbook
+Salaries &lt;- read_excel("salaries.xlsx", sheet=1)
+```
+
+----
+
+Dado que los libros de trabajo pueden tener más de una hoja de trabajo, puede especificar la que desee con la opción `sheet`. El valor predeterminado es `sheet=1`.
+
+&lt;br&gt;
+
+&gt; También se puede utilizar la función `read_xlsx()`
+]
+
+
+.pull-right[
+
+
+```
+##        rank discipline yrs.since.phd yrs.service  sex salary
+## 1      Prof          B            19          18 Male 139750
+## 2      Prof          B            20          16 Male 173200
+## 3  AsstProf          B             4           3 Male  79750
+## 4      Prof          B            45          39 Male 115000
+## 5      Prof          B            40          41 Male 141500
+## 6 AssocProf          B             6           6 Male  97000
+```
+
+]
+
+
+---
+
+
+
+# <i class="fa fa-upload" role="presentation" aria-label="upload icon"></i> Importar Data
+
+
+### Desde algún software
+
+
+.left-column[
+
+El paquete `haven` proporciona funciones para importar datos de una variedad de paquetes estadísticos.
+
+
+.center[
+&lt;img src="https://haven.tidyverse.org/logo.png" 
+width="150px"/&gt;
+]
+
+
+]
+
+
+.right-column[
+
+----
+
+
+```r
+library(haven)
+
+# import data from Stata
+Salaries &lt;- read_dta("salaries.dta")
+
+# import data from SPSS
+Salaries &lt;- read_sav("salaries.sav")
+
+# import data from SAS
+Salaries &lt;- read_sas("salaries.sas7bdat")
+```
+
+----
+
+]
+
+
+---
+
+
+# <i class="fa fa-upload" role="presentation" aria-label="upload icon"></i> Importar Data
+
+
+### Desde algún software
+
+
+.pull-left[
+
+La importación de datos de una base de datos requiere pasos adicionales. Dependiendo de la base de datos que contiene los datos, los siguientes paquetes pueden ayudar: 
+
+
+* `RODBC` 
+* `RMySQL` 
+* `ROracle` 
+* `RPostgreSQL` 
+* `RSQLite`
+* `RMongo` 
+
+
+En las versiones más recientes de **RStudio**, puede usar el panel Conexiones para acceder rápidamente a los datos almacenados en los sistemas de administración de bases de datos.
+
+]
+
+
+.pull-right[
+
+----
+
+
+![](https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif)
+
+----
+
+]
+
+
+---
+
+name: Clean
+class: inverse, center, middle
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i>
+# Cleaning DATA
+----
+
+.right[
+.bottom[
+####  [<i class="fa fa-bell" role="presentation" aria-label="bell icon"></i>](#menu)
+]
+]
+
+---
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Cleaning DATA
+
+Los procesos de limpieza de los datos pueden ser la parte más lenta de cualquier análisis de datos. Los pasos más importantes se consideran a continuación.
+
+&gt; Si bien existen muchos enfoques, los que usan los paquetes `dplyr` y `tidyr` son algunos de los más rápidos y fáciles de aprender.
+
+
+.pull-left[
+
+.center[
+![](https://media.giphy.com/media/3ohs87VPYLrH0JoF8s/giphy.gif)
+
+
+Los ejemplos de esta sección utilizarán el conjunto de datos de `starwars` del paquete `dplyr`. El conjunto de datos proporciona descripciones de 87 caracteres del universo de Starwars en 13 variables.
+]
+]
+
+.pull-right[
+
+
+
+|**Package** |	**Function** |	**Use** |
+|--------| -------- |--------
+|dplyr |	select |	select variables/columns|
+|dplyr |	filter |	select observations/rows |
+|dplyr |	mutate |	transform or recode variables|
+|dplyr |	summarize |	summarize data|
+|dplyr |	group_by |	identify subgroups for further processing|
+|tidyr |	gather |	convert wide format dataset to long format|
+|tidyr |	spread |	convert long format dataset to wide format|
+
+
+]
+
+---
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Starwars
+
+
+
+```
+## # A tibble: 25 x 14
+##    name    height  mass hair_color  skin_color eye_color birth_year sex   gender
+##    &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+##  1 Luke S~    172    77 blond       fair       blue            19   male  mascu~
+##  2 C-3PO      167    75 &lt;NA&gt;        gold       yellow         112   none  mascu~
+##  3 R2-D2       96    32 &lt;NA&gt;        white, bl~ red             33   none  mascu~
+##  4 Darth ~    202   136 none        white      yellow          41.9 male  mascu~
+##  5 Leia O~    150    49 brown       light      brown           19   fema~ femin~
+##  6 Owen L~    178   120 brown, grey light      blue            52   male  mascu~
+##  7 Beru W~    165    75 brown       light      blue            47   fema~ femin~
+##  8 R5-D4       97    32 &lt;NA&gt;        white, red red             NA   none  mascu~
+##  9 Biggs ~    183    84 black       light      brown           24   male  mascu~
+## 10 Obi-Wa~    182    77 auburn, wh~ fair       blue-gray       57   male  mascu~
+## # ... with 15 more rows, and 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;,
+## #   films &lt;list&gt;, vehicles &lt;list&gt;, starships &lt;list&gt;
+```
+
+
+
+
+---
+
+
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Seleccionar variables
+
+La función `select` le permite limitar su conjunto de datos a variables específicas (columnas).
+
+
+----
+
+* Guardamos las variables: `name`, `height` y `gender`
+
+
+```r
+newdata &lt;- select(starwars, name, height, gender)
+```
+
+----
+
+
+* Guardamos las variables: `name`, y todas las variables entre `mass` y `species`
+
+
+```r
+newdata &lt;- select(starwars, name, mass:species)
+```
+
+
+----
+
+
+* Guardamos todas las variables, excepto `birth_year` y `gender`
+
+
+```r
+newdata &lt;- select(starwars, -birth_year, -gender)
+```
+
+----
+
+
+---
+
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Filtrar observaciones
+
+La función `filter` le permite limitar su conjunto de datos a observaciones (filas) que cumplen un criterio específico. Se pueden combinar varios criterios con los símbolos `&amp;` (Y) y `|` (O).
+
+
+----
+
+* Seleccionamos el género: `female`
+
+
+```r
+newdata &lt;- filter(starwars, sex == "female")
+```
+
+----
+
+
+* Seleccionar mujeres que son de Alderaan
+
+
+```r
+newdata &lt;- filter(starwars, sex == "female" &amp; homeworld == "Alderaan")
+```
+
+
+----
+
+.pull-left[
+
+1. Seleccionar individuos que sean de Alderaan, Coruscant o Endor ➡️ ➡️ ➡️
+
+2. Lo anterior se puede escribir de manera más sucinta como ➡️ ➡️ ➡️
+]
+
+
+.pull-left[
+
+```r
+newdata &lt;- filter(starwars, 
+                  homeworld == "Alderaan" | 
+                  homeworld == "Coruscant" | 
+                  homeworld == "Endor")
+
+
+newdata &lt;- filter(starwars, 
+                  homeworld %in% c("Alderaan", "Coruscant", "Endor"))
+```
+
+]
+
+
+
+---
+
+
+
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Crear/Recodificar variables
+
+La función `mutate` le permite crear nuevas variables o transformar las existentes.
+
+
+
+
+* Convertir la altura en centímetros a pulgadas y la masa en kilogramos a libras.
+
+
+```r
+newdata &lt;- mutate(starwars, 
+                  height = height * 0.394,
+                  mass   = mass   * 2.205)
+```
+
+----
+
+
+La función `ifelse` (parte de la base R) se puede utilizar para recodificar datos. El formato es `ifelse(test, return if TRUE, return if FALSE)`
+
+
+.left-column[
+.center[
+**Qué hacen los códigos siguientes? 🤔**
+]
+]
+
+.right-column[
+
+```r
+newdata &lt;- mutate(starwars, 
+                  heightcat = ifelse(height &gt; 180, 
+                                     "tall", "short"))
+newdata &lt;- mutate(starwars, 
+                  eye_color = ifelse(eye_color %in% c("black", "blue", "brown"),
+                                     eye_color,"other"))
+newdata &lt;- mutate(starwars, 
+                  height = ifelse(height &lt; 75 | height &gt; 200,
+                                     NA, height))
+```
+]
+
+
+
+
+---
+
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Crear/Recodificar variables
+
+En el análisis de datos, puede haber muchos casos en los que tenga que lidiar con valores perdidos, valores negativos o valores no precisos que están presentes en el conjunto de datos. Estos valores también pueden afectar el resultado del análisis.
+
+
+La función `replace` le permite reemplazar los valores falsos con valores apropiados.
+
+
+
+```r
+replace(x, list, values)
+```
+
+
+* `x` vector que contiene los valores
+* `list` indica la posición del vector a reemplazar
+* `values` los valores de reemplazo
+
+
+----
+
+
+
+```r
+df&lt;- c('apple', 'orange','grape','banana')
+df
+```
+
+```
+## [1] "apple"  "orange" "grape"  "banana"
+```
+
+
+
+```r
+dy&lt;-replace(df, 2,'blueberry')
+dy
+```
+
+```
+## [1] "apple"     "blueberry" "grape"     "banana"
+```
+
+
+
+---
+
+
+
+
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Summarize
+
+La función `summarize` se puede utilizar para reducir varios valores a un solo valor (como una media). A menudo se utiliza junto con la función `by_group` para calcular estadísticas por grupo. En el siguiente código, la opción `na.rm=TRUE` se usa para eliminar los valores faltantes antes de calcular las medias.
+
+&lt;br&gt;
+
+.pull-left[
+
+
+```r
+newdata &lt;- summarize(starwars, 
+                     mean_ht = mean(height, na.rm=TRUE), 
+                     mean_mass = mean(mass, na.rm=TRUE))
+```
+]
+
+.pull-right[
+
+
+```
+## # A tibble: 1 x 2
+##   mean_ht mean_mass
+##     &lt;dbl&gt;     &lt;dbl&gt;
+## 1    174.      97.3
+```
+]
+
+
+
+----
+
+&lt;br&gt;
+
+.pull-left[
+
+
+```r
+newdata &lt;- group_by(starwars, gender)
+newdata &lt;- summarize(newdata, 
+                     mean_ht = mean(height, na.rm=TRUE), 
+                     mean_wt = mean(mass, na.rm=TRUE))
+```
+]
+
+.pull-right[
+
+```
+## # A tibble: 3 x 3
+##   gender    mean_ht mean_wt
+##   &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;
+## 1 feminine     165.    54.7
+## 2 masculine    177.   106. 
+## 3 &lt;NA&gt;         181.    48
+```
+
+]
+
+
+---
+
+
+
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Pipes
+
+Paquetes como `dplyr` y `tidyr` le permiten escribir su código en un formato compacto utilizando el `operador pipe` **%&gt;%**. Aquí hay un ejemplo,
+
+
+* Código clásico
+
+
+```r
+newdata &lt;- filter(starwars, 
+                  sex == "female")
+newdata &lt;- group_by(newdata,species)
+newdata &lt;- summarize(newdata, 
+                     mean_ht = mean(height, na.rm = TRUE))
+```
+
+----
+
+* Código con pipes
+
+
+```r
+newdata &lt;- starwars %&gt;%
+  filter(sex == "female") %&gt;%
+  group_by(species) %&gt;%
+  summarize(mean_ht = mean(height, na.rm = TRUE))
+```
+
+
+---
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Reshape (Reshape2)
+
+* **Wide:** Una tabla está en formato ancho cuando cada fila contiene un `ID` y cada columna expresa una característica de ese individuo.
+
+* **Long:** Una tabla está en formato largo cuando las características específicas de los individuos se expresan en una sola columna `variable` y estas representan un `value` en una sola columna. Es decir, los `ID` se repiten en las filas.
+
+
+
+.pull-left[
+
+
+### Wide
+
+
+```
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1           5.1         3.5          1.4         0.2  setosa
+## 2           4.9         3.0          1.4         0.2  setosa
+## 3           4.7         3.2          1.3         0.2  setosa
+## 4           4.6         3.1          1.5         0.2  setosa
+## 5           5.0         3.6          1.4         0.2  setosa
+## 6           5.4         3.9          1.7         0.4  setosa
+## 7           4.6         3.4          1.4         0.3  setosa
+## 8           5.0         3.4          1.5         0.2  setosa
+## 9           4.4         2.9          1.4         0.2  setosa
+## 10          4.9         3.1          1.5         0.1  setosa
+## 11          5.4         3.7          1.5         0.2  setosa
+## 12          4.8         3.4          1.6         0.2  setosa
+```
+]
+
+.pull-right[
+
+### Long
+
+.center[
+
+```
+##    Species     variable value
+## 1   setosa Sepal.Length   5.1
+## 2   setosa Sepal.Length   4.9
+## 3   setosa Sepal.Length   4.7
+## 4   setosa Sepal.Length   4.6
+## 5   setosa Sepal.Length   5.0
+## 6   setosa Sepal.Length   5.4
+## 7   setosa Sepal.Length   4.6
+## 8   setosa Sepal.Length   5.0
+## 9   setosa Sepal.Length   4.4
+## 10  setosa Sepal.Length   4.9
+## 11  setosa Sepal.Length   5.4
+## 12  setosa Sepal.Length   4.8
+```
+]
+]
+
+
+---
+
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Reshape (Reshape2)
+
+La librería `Reshape2` con la función `melt` ayuda a convertir una tabla a formato long. El parámetro `id` permite especificar con base en que variable se quiere generar la transformación de la data.
+
+&gt; `id = c("Var1","Var2",..)` Se puede especificar más de una variable.
+
+
+### Long
+
+
+```r
+library(reshape2)
+melt(iris,id="Species") 
+```
+
+
+
+
+```
+##    Species     variable value
+## 1   setosa Sepal.Length   5.1
+## 2   setosa Sepal.Length   4.9
+## 3   setosa Sepal.Length   4.7
+## 4   setosa Sepal.Length   4.6
+## 5   setosa Sepal.Length   5.0
+## 6   setosa Sepal.Length   5.4
+## 7   setosa Sepal.Length   4.6
+## 8   setosa Sepal.Length   5.0
+## 9   setosa Sepal.Length   4.4
+## 10  setosa Sepal.Length   4.9
+```
+
+
+
+---
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Reshape (Reshape2)
+
+A partir del formato largo se puede pasar a distintos tipos de formatos no largos (o anchos) usando la función `dcast`
+
+
+### Wide
+
+
+```r
+library(reshape2)
+
+newdata&lt;-gapminder::gapminder %&gt;% 
+  select(country, continent, pop)
+
+dcast(newdata, country ~ continent)
+```
+
+.pull-left[
+
+
+```
+## # A tibble: 7 x 3
+##   country     continent      pop
+##   &lt;fct&gt;       &lt;fct&gt;        &lt;int&gt;
+## 1 Afghanistan Asia      31889923
+## 2 Albania     Europe     3600523
+## 3 Algeria     Africa    33333216
+## 4 Angola      Africa    12420476
+## 5 Argentina   Americas  40301927
+## 6 Australia   Oceania   20434176
+## 7 Austria     Europe     8199783
+```
+
+]
+
+
+.pull-right[
+
+.center[
+
+```
+##       country   Africa Americas      Asia  Europe  Oceania
+## 1 Afghanistan       NA       NA  31889923      NA       NA
+## 2     Albania       NA       NA        NA 3600523       NA
+## 3     Algeria 33333216       NA        NA      NA       NA
+## 4      Angola 12420476       NA        NA      NA       NA
+## 5   Argentina       NA 40301927        NA      NA       NA
+## 6   Australia       NA       NA        NA      NA 20434176
+## 7     Austria       NA       NA        NA 8199783       NA
+## 8     Bahrain       NA       NA    708573      NA       NA
+## 9  Bangladesh       NA       NA 150448339      NA       NA
+```
+]
+]
+
+
+
+
+---
+
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Reshape (tidyr)
+
+
+La librería `tydir` también permite hacer el reshape a la tabla de datos.
+
+
+
+
+### Long
+
+
+```r
+library(tidyr)
+long_data &lt;- gather(iris, 
+                    key="variable", 
+                    value="value", 
+                    Species:Petal.Width)
+
+head(long_data,10)
+```
+
+
+
+
+```
+##    Sepal.Length Sepal.Width Petal.Length variable  value
+## 1           5.1         3.5          1.4  Species setosa
+## 2           4.9         3.0          1.4  Species setosa
+## 3           4.7         3.2          1.3  Species setosa
+## 4           4.6         3.1          1.5  Species setosa
+## 5           5.0         3.6          1.4  Species setosa
+## 6           5.4         3.9          1.7  Species setosa
+## 7           4.6         3.4          1.4  Species setosa
+## 8           5.0         3.4          1.5  Species setosa
+## 9           4.4         2.9          1.4  Species setosa
+## 10          4.9         3.1          1.5  Species setosa
+```
+
+---
+
+
+
+
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Reshape (tidyr)
+
+
+La librería `tydir` también permite hacer el reshape a la tabla de datos.
+
+
+### Wide
+
+
+```r
+newdata&lt;-gapminder::gapminder %&gt;%
+  filter(year==2007) %&gt;% 
+  select(country, continent, pop)
+
+library(tidyr)
+wide_data &lt;- spread(newdata, continent, pop)
+
+
+head(wide_data,12)
+```
+
+
+
+
+```
+## # A tibble: 6 x 6
+##   country       Africa Americas     Asia  Europe  Oceania
+##   &lt;fct&gt;          &lt;int&gt;    &lt;int&gt;    &lt;int&gt;   &lt;int&gt;    &lt;int&gt;
+## 1 Afghanistan       NA       NA 31889923      NA       NA
+## 2 Albania           NA       NA       NA 3600523       NA
+## 3 Algeria     33333216       NA       NA      NA       NA
+## 4 Angola      12420476       NA       NA      NA       NA
+## 5 Argentina         NA 40301927       NA      NA       NA
+## 6 Australia         NA       NA       NA      NA 20434176
+```
+
+---
+
+
+
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Merge
+
+
+&gt; Hacer un *merge* es unir dos conjuntos de datos por una o más columnas comunes.
+
+
+### R base: función `merge()`
+
+
+```r
+merge(df1, df2, by.x = "df1ColName", by.y = "df2ColName")
+```
+
+* No importa el orden del marco de datos 1 y el marco de datos 2, pero el primero se considera *X* y el segundo es *Y*. 
+
+
+* Si las columnas por las que desea unirse no tienen el mismo nombre, debe indicarle a fusionar las columnas por las que desea unirse: `by.x` para el nombre de la columna del marco de datos *X*, y `by.y` para la *Y*.
+
+
+* También puede indicar fusionar si desea todas las filas, incluidas las que no coinciden, o solo las filas que coinciden, con los argumentos `all.x = TRUE` y `all.y = TRUE`.
+
+
+---
+
+
+
+# <i class="fa fa-broom" role="presentation" aria-label="broom icon"></i> Merge
+
+
+&gt; Hacer un *merge* es unir dos conjuntos de datos por una o más columnas comunes.
+
+
+### dplyr: función `left_join()`
+
+
+.pull-left[
+
+
+```r
+left_join(x, y, by = c("df1ColName" = "df2ColName"))
+```
+
+
+* `left_join` Incluye todo lo que está a la izquierda (en *X*) y todas las filas que coinciden con el marco de datos derecho (*Y*).
+
+
+* Si las columnas de combinación tienen el mismo nombre, todo lo que necesita es `left_join(x, y)`. 
+
+
+* También puede indicar fusionar si desea todas las filas, incluidas las que no coinciden, o solo las filas que coinciden, con los argumentos `all.x = TRUE` y `all.y = TRUE`.
+
+]
+
+
+.pull-right[
+
+.center[
+&lt;img src="img/left_join.png" width="70%" /&gt;
+]
+]
+
+---
+
+
+
+name: Actividad
+class: inverse
+background-color: #00081d
+
+
+# Actividad
+----
+
+.left-column[
+![](https://media.giphy.com/media/dVuyBgq2z5gVBkFtDc/giphy.gif)
+
+![](https://media.giphy.com/media/dVuyBgq2z5gVBkFtDc/giphy.gif)
+
+![](https://media.giphy.com/media/dVuyBgq2z5gVBkFtDc/giphy.gif)
+]
+
+.right-column[
+1️⃣ Descargue la información de Covid-19 🦠  para Colombia desde 🔗**[Datos Abiertos](https://www.datos.gov.co/)**
+
+
+2️⃣ Descargue la información Divipola la cual permita georeferenciar 🧭 los municipios y departamentos de Colombia (Consulte la información en el 🔗**[Geo-Portal del DANE](https://geoportal.dane.gov.co/geovisores/territorio/consulta-divipola-division-politico-administrativa-de-colombia/)**)
+
+
+3️⃣ Realice un *"merge"* entre las dos bases de datos, de tal manera que pueda obtener una nueva data que consolide lo siguiente:
+
+* Código Divipola (Dpto) 
+* Fecha
+* Departamento
+* Municipio
+* Edad
+* Sexo
+]
+
+
+---
+
+name: Tablas
+class: inverse, center, middle
+
+# <i class="fa fa-table" role="presentation" aria-label="table icon"></i>
+# Tablas
+----
+
+.right[
+.bottom[
+####  [<i class="fa fa-bell" role="presentation" aria-label="bell icon"></i>](#menu)
+]
+]
+
+---
+
+
+# <i class="fa fa-table" role="presentation" aria-label="table icon"></i> Tablas
+
+
+La visualización de datos en R es un tema enorme. No importa qué tan bueno sea su análisis de datos si no comunica sus resultados de manera efectiva. En la mayoría de los informes, **la comunicación de los resultados se realiza mediante una combinación de visualización de datos y tablas.**
+
+&lt;br&gt;
+
+&gt; Inicialmente exploremos este tipo de visualización en:
+
+
+* default
+* kable
+* tibble
+* paged
+
+.left-column[
+
+.center[
+&lt;img src="https://rubenfcasal.github.io/bookdown_intro/images/rmarkdown.png" 
+width="150px"/&gt;
+]
+
+]
+
+.right-column[
+Las visualizaciones de estas tablas son generadas en salidas tipo `Rmarkdown` para una correcta visualización en formato PDF o HTML.
+]
+
+
+
+---
+
+# <i class="fa fa-table" role="presentation" aria-label="table icon"></i> Tablas *default*
+
+
+
+```r
+print.data.frame( head(iris,20) )
+```
+
+```
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1           5.1         3.5          1.4         0.2  setosa
+## 2           4.9         3.0          1.4         0.2  setosa
+## 3           4.7         3.2          1.3         0.2  setosa
+## 4           4.6         3.1          1.5         0.2  setosa
+## 5           5.0         3.6          1.4         0.2  setosa
+## 6           5.4         3.9          1.7         0.4  setosa
+## 7           4.6         3.4          1.4         0.3  setosa
+## 8           5.0         3.4          1.5         0.2  setosa
+## 9           4.4         2.9          1.4         0.2  setosa
+## 10          4.9         3.1          1.5         0.1  setosa
+## 11          5.4         3.7          1.5         0.2  setosa
+## 12          4.8         3.4          1.6         0.2  setosa
+## 13          4.8         3.0          1.4         0.1  setosa
+## 14          4.3         3.0          1.1         0.1  setosa
+## 15          5.8         4.0          1.2         0.2  setosa
+## 16          5.7         4.4          1.5         0.4  setosa
+## 17          5.4         3.9          1.3         0.4  setosa
+## 18          5.1         3.5          1.4         0.3  setosa
+## 19          5.7         3.8          1.7         0.3  setosa
+## 20          5.1         3.8          1.5         0.3  setosa
+```
+---
+
+
+# <i class="fa fa-table" role="presentation" aria-label="table icon"></i> Tablas *knitr::kable*
+
+
+
+```r
+knitr::kable( head(iris,10) )
+```
+
+
+
+| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
+|------------:|-----------:|------------:|-----------:|:-------|
+|          5.1|         3.5|          1.4|         0.2|setosa  |
+|          4.9|         3.0|          1.4|         0.2|setosa  |
+|          4.7|         3.2|          1.3|         0.2|setosa  |
+|          4.6|         3.1|          1.5|         0.2|setosa  |
+|          5.0|         3.6|          1.4|         0.2|setosa  |
+|          5.4|         3.9|          1.7|         0.4|setosa  |
+|          4.6|         3.4|          1.4|         0.3|setosa  |
+|          5.0|         3.4|          1.5|         0.2|setosa  |
+|          4.4|         2.9|          1.4|         0.2|setosa  |
+|          4.9|         3.1|          1.5|         0.1|setosa  |
+---
+
+# <i class="fa fa-table" role="presentation" aria-label="table icon"></i> Tablas *tibble*
+
+
+
+```r
+print(tbl_df(iris))
+```
+
+```
+## # A tibble: 150 x 5
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+##  1          5.1         3.5          1.4         0.2 setosa 
+##  2          4.9         3            1.4         0.2 setosa 
+##  3          4.7         3.2          1.3         0.2 setosa 
+##  4          4.6         3.1          1.5         0.2 setosa 
+##  5          5           3.6          1.4         0.2 setosa 
+##  6          5.4         3.9          1.7         0.4 setosa 
+##  7          4.6         3.4          1.4         0.3 setosa 
+##  8          5           3.4          1.5         0.2 setosa 
+##  9          4.4         2.9          1.4         0.2 setosa 
+## 10          4.9         3.1          1.5         0.1 setosa 
+## # ... with 140 more rows
+```
+---
+
+# <i class="fa fa-table" role="presentation" aria-label="table icon"></i> Tablas *paged*
+
+
+
+```r
+rmarkdown::paged_table(iris)
+```
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fct"],"align":["left"]}],"data":[{"1":"5.1","2":"3.5","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.0","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.7","2":"3.2","3":"1.3","4":"0.2","5":"setosa"},{"1":"4.6","2":"3.1","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.6","3":"1.4","4":"0.2","5":"setosa"},{"1":"5.4","2":"3.9","3":"1.7","4":"0.4","5":"setosa"},{"1":"4.6","2":"3.4","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.0","2":"3.4","3":"1.5","4":"0.2","5":"setosa"},{"1":"4.4","2":"2.9","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.1","3":"1.5","4":"0.1","5":"setosa"},{"1":"5.4","2":"3.7","3":"1.5","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.4","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.0","3":"1.4","4":"0.1","5":"setosa"},{"1":"4.3","2":"3.0","3":"1.1","4":"0.1","5":"setosa"},{"1":"5.8","2":"4.0","3":"1.2","4":"0.2","5":"setosa"},{"1":"5.7","2":"4.4","3":"1.5","4":"0.4","5":"setosa"},{"1":"5.4","2":"3.9","3":"1.3","4":"0.4","5":"setosa"},{"1":"5.1","2":"3.5","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.7","2":"3.8","3":"1.7","4":"0.3","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.5","4":"0.3","5":"setosa"},{"1":"5.4","2":"3.4","3":"1.7","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.7","3":"1.5","4":"0.4","5":"setosa"},{"1":"4.6","2":"3.6","3":"1.0","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.3","3":"1.7","4":"0.5","5":"setosa"},{"1":"4.8","2":"3.4","3":"1.9","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.0","3":"1.6","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.4","3":"1.6","4":"0.4","5":"setosa"},{"1":"5.2","2":"3.5","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.2","2":"3.4","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.7","2":"3.2","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.8","2":"3.1","3":"1.6","4":"0.2","5":"setosa"},{"1":"5.4","2":"3.4","3":"1.5","4":"0.4","5":"setosa"},{"1":"5.2","2":"4.1","3":"1.5","4":"0.1","5":"setosa"},{"1":"5.5","2":"4.2","3":"1.4","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.1","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.2","3":"1.2","4":"0.2","5":"setosa"},{"1":"5.5","2":"3.5","3":"1.3","4":"0.2","5":"setosa"},{"1":"4.9","2":"3.6","3":"1.4","4":"0.1","5":"setosa"},{"1":"4.4","2":"3.0","3":"1.3","4":"0.2","5":"setosa"},{"1":"5.1","2":"3.4","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.5","3":"1.3","4":"0.3","5":"setosa"},{"1":"4.5","2":"2.3","3":"1.3","4":"0.3","5":"setosa"},{"1":"4.4","2":"3.2","3":"1.3","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.5","3":"1.6","4":"0.6","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.9","4":"0.4","5":"setosa"},{"1":"4.8","2":"3.0","3":"1.4","4":"0.3","5":"setosa"},{"1":"5.1","2":"3.8","3":"1.6","4":"0.2","5":"setosa"},{"1":"4.6","2":"3.2","3":"1.4","4":"0.2","5":"setosa"},{"1":"5.3","2":"3.7","3":"1.5","4":"0.2","5":"setosa"},{"1":"5.0","2":"3.3","3":"1.4","4":"0.2","5":"setosa"},{"1":"7.0","2":"3.2","3":"4.7","4":"1.4","5":"versicolor"},{"1":"6.4","2":"3.2","3":"4.5","4":"1.5","5":"versicolor"},{"1":"6.9","2":"3.1","3":"4.9","4":"1.5","5":"versicolor"},{"1":"5.5","2":"2.3","3":"4.0","4":"1.3","5":"versicolor"},{"1":"6.5","2":"2.8","3":"4.6","4":"1.5","5":"versicolor"},{"1":"5.7","2":"2.8","3":"4.5","4":"1.3","5":"versicolor"},{"1":"6.3","2":"3.3","3":"4.7","4":"1.6","5":"versicolor"},{"1":"4.9","2":"2.4","3":"3.3","4":"1.0","5":"versicolor"},{"1":"6.6","2":"2.9","3":"4.6","4":"1.3","5":"versicolor"},{"1":"5.2","2":"2.7","3":"3.9","4":"1.4","5":"versicolor"},{"1":"5.0","2":"2.0","3":"3.5","4":"1.0","5":"versicolor"},{"1":"5.9","2":"3.0","3":"4.2","4":"1.5","5":"versicolor"},{"1":"6.0","2":"2.2","3":"4.0","4":"1.0","5":"versicolor"},{"1":"6.1","2":"2.9","3":"4.7","4":"1.4","5":"versicolor"},{"1":"5.6","2":"2.9","3":"3.6","4":"1.3","5":"versicolor"},{"1":"6.7","2":"3.1","3":"4.4","4":"1.4","5":"versicolor"},{"1":"5.6","2":"3.0","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.8","2":"2.7","3":"4.1","4":"1.0","5":"versicolor"},{"1":"6.2","2":"2.2","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.6","2":"2.5","3":"3.9","4":"1.1","5":"versicolor"},{"1":"5.9","2":"3.2","3":"4.8","4":"1.8","5":"versicolor"},{"1":"6.1","2":"2.8","3":"4.0","4":"1.3","5":"versicolor"},{"1":"6.3","2":"2.5","3":"4.9","4":"1.5","5":"versicolor"},{"1":"6.1","2":"2.8","3":"4.7","4":"1.2","5":"versicolor"},{"1":"6.4","2":"2.9","3":"4.3","4":"1.3","5":"versicolor"},{"1":"6.6","2":"3.0","3":"4.4","4":"1.4","5":"versicolor"},{"1":"6.8","2":"2.8","3":"4.8","4":"1.4","5":"versicolor"},{"1":"6.7","2":"3.0","3":"5.0","4":"1.7","5":"versicolor"},{"1":"6.0","2":"2.9","3":"4.5","4":"1.5","5":"versicolor"},{"1":"5.7","2":"2.6","3":"3.5","4":"1.0","5":"versicolor"},{"1":"5.5","2":"2.4","3":"3.8","4":"1.1","5":"versicolor"},{"1":"5.5","2":"2.4","3":"3.7","4":"1.0","5":"versicolor"},{"1":"5.8","2":"2.7","3":"3.9","4":"1.2","5":"versicolor"},{"1":"6.0","2":"2.7","3":"5.1","4":"1.6","5":"versicolor"},{"1":"5.4","2":"3.0","3":"4.5","4":"1.5","5":"versicolor"},{"1":"6.0","2":"3.4","3":"4.5","4":"1.6","5":"versicolor"},{"1":"6.7","2":"3.1","3":"4.7","4":"1.5","5":"versicolor"},{"1":"6.3","2":"2.3","3":"4.4","4":"1.3","5":"versicolor"},{"1":"5.6","2":"3.0","3":"4.1","4":"1.3","5":"versicolor"},{"1":"5.5","2":"2.5","3":"4.0","4":"1.3","5":"versicolor"},{"1":"5.5","2":"2.6","3":"4.4","4":"1.2","5":"versicolor"},{"1":"6.1","2":"3.0","3":"4.6","4":"1.4","5":"versicolor"},{"1":"5.8","2":"2.6","3":"4.0","4":"1.2","5":"versicolor"},{"1":"5.0","2":"2.3","3":"3.3","4":"1.0","5":"versicolor"},{"1":"5.6","2":"2.7","3":"4.2","4":"1.3","5":"versicolor"},{"1":"5.7","2":"3.0","3":"4.2","4":"1.2","5":"versicolor"},{"1":"5.7","2":"2.9","3":"4.2","4":"1.3","5":"versicolor"},{"1":"6.2","2":"2.9","3":"4.3","4":"1.3","5":"versicolor"},{"1":"5.1","2":"2.5","3":"3.0","4":"1.1","5":"versicolor"},{"1":"5.7","2":"2.8","3":"4.1","4":"1.3","5":"versicolor"},{"1":"6.3","2":"3.3","3":"6.0","4":"2.5","5":"virginica"},{"1":"5.8","2":"2.7","3":"5.1","4":"1.9","5":"virginica"},{"1":"7.1","2":"3.0","3":"5.9","4":"2.1","5":"virginica"},{"1":"6.3","2":"2.9","3":"5.6","4":"1.8","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.8","4":"2.2","5":"virginica"},{"1":"7.6","2":"3.0","3":"6.6","4":"2.1","5":"virginica"},{"1":"4.9","2":"2.5","3":"4.5","4":"1.7","5":"virginica"},{"1":"7.3","2":"2.9","3":"6.3","4":"1.8","5":"virginica"},{"1":"6.7","2":"2.5","3":"5.8","4":"1.8","5":"virginica"},{"1":"7.2","2":"3.6","3":"6.1","4":"2.5","5":"virginica"},{"1":"6.5","2":"3.2","3":"5.1","4":"2.0","5":"virginica"},{"1":"6.4","2":"2.7","3":"5.3","4":"1.9","5":"virginica"},{"1":"6.8","2":"3.0","3":"5.5","4":"2.1","5":"virginica"},{"1":"5.7","2":"2.5","3":"5.0","4":"2.0","5":"virginica"},{"1":"5.8","2":"2.8","3":"5.1","4":"2.4","5":"virginica"},{"1":"6.4","2":"3.2","3":"5.3","4":"2.3","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.5","4":"1.8","5":"virginica"},{"1":"7.7","2":"3.8","3":"6.7","4":"2.2","5":"virginica"},{"1":"7.7","2":"2.6","3":"6.9","4":"2.3","5":"virginica"},{"1":"6.0","2":"2.2","3":"5.0","4":"1.5","5":"virginica"},{"1":"6.9","2":"3.2","3":"5.7","4":"2.3","5":"virginica"},{"1":"5.6","2":"2.8","3":"4.9","4":"2.0","5":"virginica"},{"1":"7.7","2":"2.8","3":"6.7","4":"2.0","5":"virginica"},{"1":"6.3","2":"2.7","3":"4.9","4":"1.8","5":"virginica"},{"1":"6.7","2":"3.3","3":"5.7","4":"2.1","5":"virginica"},{"1":"7.2","2":"3.2","3":"6.0","4":"1.8","5":"virginica"},{"1":"6.2","2":"2.8","3":"4.8","4":"1.8","5":"virginica"},{"1":"6.1","2":"3.0","3":"4.9","4":"1.8","5":"virginica"},{"1":"6.4","2":"2.8","3":"5.6","4":"2.1","5":"virginica"},{"1":"7.2","2":"3.0","3":"5.8","4":"1.6","5":"virginica"},{"1":"7.4","2":"2.8","3":"6.1","4":"1.9","5":"virginica"},{"1":"7.9","2":"3.8","3":"6.4","4":"2.0","5":"virginica"},{"1":"6.4","2":"2.8","3":"5.6","4":"2.2","5":"virginica"},{"1":"6.3","2":"2.8","3":"5.1","4":"1.5","5":"virginica"},{"1":"6.1","2":"2.6","3":"5.6","4":"1.4","5":"virginica"},{"1":"7.7","2":"3.0","3":"6.1","4":"2.3","5":"virginica"},{"1":"6.3","2":"3.4","3":"5.6","4":"2.4","5":"virginica"},{"1":"6.4","2":"3.1","3":"5.5","4":"1.8","5":"virginica"},{"1":"6.0","2":"3.0","3":"4.8","4":"1.8","5":"virginica"},{"1":"6.9","2":"3.1","3":"5.4","4":"2.1","5":"virginica"},{"1":"6.7","2":"3.1","3":"5.6","4":"2.4","5":"virginica"},{"1":"6.9","2":"3.1","3":"5.1","4":"2.3","5":"virginica"},{"1":"5.8","2":"2.7","3":"5.1","4":"1.9","5":"virginica"},{"1":"6.8","2":"3.2","3":"5.9","4":"2.3","5":"virginica"},{"1":"6.7","2":"3.3","3":"5.7","4":"2.5","5":"virginica"},{"1":"6.7","2":"3.0","3":"5.2","4":"2.3","5":"virginica"},{"1":"6.3","2":"2.5","3":"5.0","4":"1.9","5":"virginica"},{"1":"6.5","2":"3.0","3":"5.2","4":"2.0","5":"virginica"},{"1":"6.2","2":"3.4","3":"5.4","4":"2.3","5":"virginica"},{"1":"5.9","2":"3.0","3":"5.1","4":"1.8","5":"virginica"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+---
+
+
+
+# <i class="fa fa-table" role="presentation" aria-label="table icon"></i> Tablas *gt*
+
+.pull-left[
+
+```r
+library(gt)
+library(tidyverse)
+
+
+iris %&gt;%
+  head(11) %&gt;% 
+  gt() %&gt;% 
+  tab_header(
+    title = "Base de datos IRIS",
+    subtitle = "Diplomado en gestión de datos"
+  )
+```
+]
+
+.pull-right[
+<div id="bjpkmborbq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#bjpkmborbq .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#bjpkmborbq .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bjpkmborbq .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#bjpkmborbq .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#bjpkmborbq .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bjpkmborbq .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bjpkmborbq .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#bjpkmborbq .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#bjpkmborbq .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#bjpkmborbq .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#bjpkmborbq .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#bjpkmborbq .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bjpkmborbq .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bjpkmborbq .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#bjpkmborbq .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#bjpkmborbq .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#bjpkmborbq .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#bjpkmborbq .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bjpkmborbq .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#bjpkmborbq .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bjpkmborbq .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#bjpkmborbq .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#bjpkmborbq .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bjpkmborbq .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bjpkmborbq .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#bjpkmborbq .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bjpkmborbq .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#bjpkmborbq .gt_left {
+  text-align: left;
+}
+
+#bjpkmborbq .gt_center {
+  text-align: center;
+}
+
+#bjpkmborbq .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#bjpkmborbq .gt_font_normal {
+  font-weight: normal;
+}
+
+#bjpkmborbq .gt_font_bold {
+  font-weight: bold;
+}
+
+#bjpkmborbq .gt_font_italic {
+  font-style: italic;
+}
+
+#bjpkmborbq .gt_super {
+  font-size: 65%;
+}
+
+#bjpkmborbq .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="5" class="gt_heading gt_title gt_font_normal" style>Base de datos IRIS</th>
+    </tr>
+    <tr>
+      <th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>Diplomado en gestión de datos</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Sepal.Length</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Sepal.Width</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Petal.Length</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Petal.Width</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Species</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_right">5.1</td>
+<td class="gt_row gt_right">3.5</td>
+<td class="gt_row gt_right">1.4</td>
+<td class="gt_row gt_right">0.2</td>
+<td class="gt_row gt_center">setosa</td></tr>
+    <tr><td class="gt_row gt_right">4.9</td>
+<td class="gt_row gt_right">3.0</td>
+<td class="gt_row gt_right">1.4</td>
+<td class="gt_row gt_right">0.2</td>
+<td class="gt_row gt_center">setosa</td></tr>
+    <tr><td class="gt_row gt_right">4.7</td>
+<td class="gt_row gt_right">3.2</td>
+<td class="gt_row gt_right">1.3</td>
+<td class="gt_row gt_right">0.2</td>
+<td class="gt_row gt_center">setosa</td></tr>
+    <tr><td class="gt_row gt_right">4.6</td>
+<td class="gt_row gt_right">3.1</td>
+<td class="gt_row gt_right">1.5</td>
+<td class="gt_row gt_right">0.2</td>
+<td class="gt_row gt_center">setosa</td></tr>
+    <tr><td class="gt_row gt_right">5.0</td>
+<td class="gt_row gt_right">3.6</td>
+<td class="gt_row gt_right">1.4</td>
+<td class="gt_row gt_right">0.2</td>
+<td class="gt_row gt_center">setosa</td></tr>
+    <tr><td class="gt_row gt_right">5.4</td>
+<td class="gt_row gt_right">3.9</td>
+<td class="gt_row gt_right">1.7</td>
+<td class="gt_row gt_right">0.4</td>
+<td class="gt_row gt_center">setosa</td></tr>
+    <tr><td class="gt_row gt_right">4.6</td>
+<td class="gt_row gt_right">3.4</td>
+<td class="gt_row gt_right">1.4</td>
+<td class="gt_row gt_right">0.3</td>
+<td class="gt_row gt_center">setosa</td></tr>
+    <tr><td class="gt_row gt_right">5.0</td>
+<td class="gt_row gt_right">3.4</td>
+<td class="gt_row gt_right">1.5</td>
+<td class="gt_row gt_right">0.2</td>
+<td class="gt_row gt_center">setosa</td></tr>
+    <tr><td class="gt_row gt_right">4.4</td>
+<td class="gt_row gt_right">2.9</td>
+<td class="gt_row gt_right">1.4</td>
+<td class="gt_row gt_right">0.2</td>
+<td class="gt_row gt_center">setosa</td></tr>
+    <tr><td class="gt_row gt_right">4.9</td>
+<td class="gt_row gt_right">3.1</td>
+<td class="gt_row gt_right">1.5</td>
+<td class="gt_row gt_right">0.1</td>
+<td class="gt_row gt_center">setosa</td></tr>
+    <tr><td class="gt_row gt_right">5.4</td>
+<td class="gt_row gt_right">3.7</td>
+<td class="gt_row gt_right">1.5</td>
+<td class="gt_row gt_right">0.2</td>
+<td class="gt_row gt_center">setosa</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+]
+
+---
+
+
+
+# <i class="fa fa-table" role="presentation" aria-label="table icon"></i> Tablas *gt*
+
+.scroll-box-10[
+
+```r
+library(gt)
+library(tidyverse)
+library(glue)
+
+# Define the start and end dates for the data range
+start_date &lt;- "2010-06-07"
+end_date &lt;- "2010-06-14"
+
+# Create a gt table based on preprocessed
+# `sp500` table data
+sp500 %&gt;%
+  filter(date &gt;= start_date &amp; date &lt;= end_date) %&gt;%
+  select(-adj_close) %&gt;%
+  gt() %&gt;%
+  tab_header(
+    title = "S&amp;P 500",
+    subtitle = glue::glue("{start_date} to {end_date}")
+  ) %&gt;%
+  fmt_date(
+    columns = date,
+    date_style = 3
+  ) %&gt;%
+  fmt_currency(
+    columns = c(open, high, low, close),
+    currency = "USD"
+  ) %&gt;%
+  fmt_number(
+    columns = volume,
+    suffixing = TRUE
+  )
+```
+]
+
+
+<div id="ploqspxclk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#ploqspxclk .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ploqspxclk .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ploqspxclk .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ploqspxclk .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ploqspxclk .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ploqspxclk .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ploqspxclk .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ploqspxclk .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ploqspxclk .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ploqspxclk .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ploqspxclk .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ploqspxclk .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ploqspxclk .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ploqspxclk .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ploqspxclk .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ploqspxclk .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ploqspxclk .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#ploqspxclk .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ploqspxclk .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#ploqspxclk .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ploqspxclk .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ploqspxclk .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ploqspxclk .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ploqspxclk .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ploqspxclk .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#ploqspxclk .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ploqspxclk .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#ploqspxclk .gt_left {
+  text-align: left;
+}
+
+#ploqspxclk .gt_center {
+  text-align: center;
+}
+
+#ploqspxclk .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ploqspxclk .gt_font_normal {
+  font-weight: normal;
+}
+
+#ploqspxclk .gt_font_bold {
+  font-weight: bold;
+}
+
+#ploqspxclk .gt_font_italic {
+  font-style: italic;
+}
+
+#ploqspxclk .gt_super {
+  font-size: 65%;
+}
+
+#ploqspxclk .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="6" class="gt_heading gt_title gt_font_normal" style>S&amp;P 500</th>
+    </tr>
+    <tr>
+      <th colspan="6" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>2010-06-07 to 2010-06-14</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">date</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">open</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">high</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">low</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">close</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">volume</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">lun., jun. 14, 2010</td>
+<td class="gt_row gt_right">$1,095.00</td>
+<td class="gt_row gt_right">$1,105.91</td>
+<td class="gt_row gt_right">$1,089.03</td>
+<td class="gt_row gt_right">$1,089.63</td>
+<td class="gt_row gt_right">4.43B</td></tr>
+    <tr><td class="gt_row gt_left">vie., jun. 11, 2010</td>
+<td class="gt_row gt_right">$1,082.65</td>
+<td class="gt_row gt_right">$1,092.25</td>
+<td class="gt_row gt_right">$1,077.12</td>
+<td class="gt_row gt_right">$1,091.60</td>
+<td class="gt_row gt_right">4.06B</td></tr>
+    <tr><td class="gt_row gt_left">jue., jun. 10, 2010</td>
+<td class="gt_row gt_right">$1,058.77</td>
+<td class="gt_row gt_right">$1,087.85</td>
+<td class="gt_row gt_right">$1,058.77</td>
+<td class="gt_row gt_right">$1,086.84</td>
+<td class="gt_row gt_right">5.14B</td></tr>
+    <tr><td class="gt_row gt_left">mié., jun. 9, 2010</td>
+<td class="gt_row gt_right">$1,062.75</td>
+<td class="gt_row gt_right">$1,077.74</td>
+<td class="gt_row gt_right">$1,052.25</td>
+<td class="gt_row gt_right">$1,055.69</td>
+<td class="gt_row gt_right">5.98B</td></tr>
+    <tr><td class="gt_row gt_left">mar., jun. 8, 2010</td>
+<td class="gt_row gt_right">$1,050.81</td>
+<td class="gt_row gt_right">$1,063.15</td>
+<td class="gt_row gt_right">$1,042.17</td>
+<td class="gt_row gt_right">$1,062.00</td>
+<td class="gt_row gt_right">6.19B</td></tr>
+    <tr><td class="gt_row gt_left">lun., jun. 7, 2010</td>
+<td class="gt_row gt_right">$1,065.84</td>
+<td class="gt_row gt_right">$1,071.36</td>
+<td class="gt_row gt_right">$1,049.86</td>
+<td class="gt_row gt_right">$1,050.47</td>
+<td class="gt_row gt_right">5.47B</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+---
+
+# <i class="fa fa-table" role="presentation" aria-label="table icon"></i> Tablas *kable + kableExtra*
+
+
+.scroll-box-10[
+
+```r
+library(knitr)
+library(kableExtra)
+
+
+airquality %&gt;% 
+   kable(format = "html", row.names = TRUE) %&gt;%
+  kable_styling(full_width = T,
+                font_size = 15) %&gt;%
+  column_spec(column = 2, bold = TRUE) %&gt;%  # columns must be specified by number
+  column_spec(column = 5, width = "5cm") %&gt;%
+  row_spec(row = 0, color = "#660033") %&gt;%  # row = 0 allows us to format the header
+  row_spec(row = 2, italic = TRUE) %&gt;%
+  row_spec(row = 3, color = "#104e8b", background = "#d3d3d3") %&gt;%
+  row_spec(row = 4, monospace = TRUE) %&gt;%
+  row_spec(row = 5, underline = TRUE) %&gt;%
+  row_spec(row = 6, strikeout = TRUE) %&gt;% 
+  scroll_box(height = "200px")
+```
+]
+
+&lt;br&gt;
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; "&gt;&lt;table class="table" style="font-size: 15px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;color: #660033 !important;position: sticky; top:0; background-color: #FFFFFF;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;color: #660033 !important;position: sticky; top:0; background-color: #FFFFFF;"&gt; Ozone &lt;/th&gt;
+   &lt;th style="text-align:right;color: #660033 !important;position: sticky; top:0; background-color: #FFFFFF;"&gt; Solar.R &lt;/th&gt;
+   &lt;th style="text-align:right;color: #660033 !important;position: sticky; top:0; background-color: #FFFFFF;"&gt; Wind &lt;/th&gt;
+   &lt;th style="text-align:right;color: #660033 !important;position: sticky; top:0; background-color: #FFFFFF;"&gt; Temp &lt;/th&gt;
+   &lt;th style="text-align:right;color: #660033 !important;position: sticky; top:0; background-color: #FFFFFF;"&gt; Month &lt;/th&gt;
+   &lt;th style="text-align:right;color: #660033 !important;position: sticky; top:0; background-color: #FFFFFF;"&gt; Day &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 41 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 190 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 67 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-style: italic;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;font-style: italic;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;font-style: italic;"&gt; 118 &lt;/td&gt;
+   &lt;td style="text-align:right;font-style: italic;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; font-style: italic;"&gt; 72 &lt;/td&gt;
+   &lt;td style="text-align:right;font-style: italic;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;font-style: italic;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;color: #104e8b !important;background-color: #d3d3d3 !important;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;color: #104e8b !important;background-color: #d3d3d3 !important;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;color: #104e8b !important;background-color: #d3d3d3 !important;"&gt; 149 &lt;/td&gt;
+   &lt;td style="text-align:right;color: #104e8b !important;background-color: #d3d3d3 !important;"&gt; 12.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; color: #104e8b !important;background-color: #d3d3d3 !important;"&gt; 74 &lt;/td&gt;
+   &lt;td style="text-align:right;color: #104e8b !important;background-color: #d3d3d3 !important;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;color: #104e8b !important;background-color: #d3d3d3 !important;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-family: monospace;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;font-family: monospace;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;font-family: monospace;"&gt; 313 &lt;/td&gt;
+   &lt;td style="text-align:right;font-family: monospace;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; font-family: monospace;"&gt; 62 &lt;/td&gt;
+   &lt;td style="text-align:right;font-family: monospace;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;font-family: monospace;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;text-decoration: underline;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;text-decoration: underline;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;text-decoration: underline;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;text-decoration: underline;"&gt; 14.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; text-decoration: underline;"&gt; 56 &lt;/td&gt;
+   &lt;td style="text-align:right;text-decoration: underline;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;text-decoration: underline;"&gt; 5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;text-decoration: line-through;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;text-decoration: line-through;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;text-decoration: line-through;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;text-decoration: line-through;"&gt; 14.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; text-decoration: line-through;"&gt; 66 &lt;/td&gt;
+   &lt;td style="text-align:right;text-decoration: line-through;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;text-decoration: line-through;"&gt; 6 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 299 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 65 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.8 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 59 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 194 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 69 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 74 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 256 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 69 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 290 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 66 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 274 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 68 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 65 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 58 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 334 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 64 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 307 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 66 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 68 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 62 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 59 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 320 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 73 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 25 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 66 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 26 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 266 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 58 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 67 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 29 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 45 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 252 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 115 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 223 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 79 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 279 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 286 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 287 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 74 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 242 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 67 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 186 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 220 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 264 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 79 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 127 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 39 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 273 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 40 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 291 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.8 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 41 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 323 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 259 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 93 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 43 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 250 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 44 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 148 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 45 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 332 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.8 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 46 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 79 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 47 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 191 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 48 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 284 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 72 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 49 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 65 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 50 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 120 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 73 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 51 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 137 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 52 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 150 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 53 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 54 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 91 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 55 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 250 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 56 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 135 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 57 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 127 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 58 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 73 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 59 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 60 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 61 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 138 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 83 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 62 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 135 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 269 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 63 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 49 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 248 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 64 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 236 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 65 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 101 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 66 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 64 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 175 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 83 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 67 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 314 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 83 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 68 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 276 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 69 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 267 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 70 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 272 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 175 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 89 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 72 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 139 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 73 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 264 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 73 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 74 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 175 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 291 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 91 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 48 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 260 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 78 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 274 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 79 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 285 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 79 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 187 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 63 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 220 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 74 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 83 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 258 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 84 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 295 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 85 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 294 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 108 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 223 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 87 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 88 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 52 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 89 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 213 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 90 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 275 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 91 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 64 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 253 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 83 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 59 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 254 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 93 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 83 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 94 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.8 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 95 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 96 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 97 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 98 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 66 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 99 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 122 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 255 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 89 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 100 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 89 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 229 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 101 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 110 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 207 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 102 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 222 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 103 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 137 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 104 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 192 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 105 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 273 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 106 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 65 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 157 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 107 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 64 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 79 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 108 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 109 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 59 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 51 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 79 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 110 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 115 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 111 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 244 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 112 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 190 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 113 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 259 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 114 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 72 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 115 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 255 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 116 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 45 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 212 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 79 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 117 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 168 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 238 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 118 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 73 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 215 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 119 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 153 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 120 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 203 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 121 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 118 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 225 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 94 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 122 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 237 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 96 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 123 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 188 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 94 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 124 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 96 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 167 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 91 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 125 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 197 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 126 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 73 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 183 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 93 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 127 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 91 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 189 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 93 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 128 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 47 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 95 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 129 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 130 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 252 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 131 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 220 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 132 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 230 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 133 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 259 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.7 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 73 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 134 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 236 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 135 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 259 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 136 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 238 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 137 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 138 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 112 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 139 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 46 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 237 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 140 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 224 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.8 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 67 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 141 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 142 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 238 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 68 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 143 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 201 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 144 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 238 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 12.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 64 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 145 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9.2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 146 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 139 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 147 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 69 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 148 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16.6 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 63 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 149 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 193 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 70 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 26 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 150 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 145 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13.2 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 151 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 191 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.3 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 28 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 152 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 131 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.0 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 153 &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 223 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;width: 5cm; "&gt; 68 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+
+---
+
+
+# <i class="fa fa-table" role="presentation" aria-label="table icon"></i> Tablas *DT::datatable*
+
+
+
+```r
+library(DT)
+
+datatable( head(iris))
+```
+
+<div id="htmlwidget-c2df9bf7f86e20db00e7" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c2df9bf7f86e20db00e7">{"x":{"filter":"none","data":[["1","2","3","4","5","6"],[5.1,4.9,4.7,4.6,5,5.4],[3.5,3,3.2,3.1,3.6,3.9],[1.4,1.4,1.3,1.5,1.4,1.7],[0.2,0.2,0.2,0.2,0.2,0.4],["setosa","setosa","setosa","setosa","setosa","setosa"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Sepal.Length<\/th>\n      <th>Sepal.Width<\/th>\n      <th>Petal.Length<\/th>\n      <th>Petal.Width<\/th>\n      <th>Species<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+
+
+
+---
+
+# <i class="fa fa-table" role="presentation" aria-label="table icon"></i> Tablas *reactable + sparkline*
+
+.scroll-box-10[
+
+```r
+library(sparkline)
+library(reactable)
+
+reactable(
+  iris[1:20, ],
+  defaultPageSize = 5,
+  bordered = TRUE,
+  defaultColDef = colDef(footer = function(values) {
+    if (!is.numeric(values)) return()
+    sparkline(values, type = "box", width = 100, height = 30)
+  })
+)
+```
+]
+
+
+<div id="htmlwidget-cfa8c8dd4ddbd9443b7d" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-cfa8c8dd4ddbd9443b7d">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Sepal.Length":[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1],"Sepal.Width":[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3,3,4,4.4,3.9,3.5,3.8,3.8],"Petal.Length":[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5,1.5,1.6,1.4,1.1,1.2,1.5,1.3,1.4,1.7,1.5],"Petal.Width":[0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1,0.2,0.2,0.1,0.1,0.2,0.4,0.4,0.3,0.3,0.3],"Species":["setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa"]},"columns":[{"accessor":"Sepal.Length","name":"Sepal.Length","type":"numeric","footer":{"name":"WidgetContainer","attribs":{"key":"b3e092951d01a99b6e825169dfa24c3a"},"children":[{"name":"Fragment","attribs":[],"children":[{"name":"span","attribs":{"id":"htmlwidget-cc40a9a3ff5f53dfff17","className":"sparkline html-widget"},"children":[]},{"name":"script","attribs":{"type":"application/json","data-for":"htmlwidget-cc40a9a3ff5f53dfff17"},"children":["{\"x\":{\"values\":[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1],\"options\":{\"type\":\"box\",\"height\":30,\"width\":100},\"width\":100,\"height\":30},\"evals\":[],\"jsHooks\":[]}"]}]}]}},{"accessor":"Sepal.Width","name":"Sepal.Width","type":"numeric","footer":{"name":"WidgetContainer","attribs":{"key":"4c00b11e2050d834874adcc5db1c40c3"},"children":[{"name":"Fragment","attribs":[],"children":[{"name":"span","attribs":{"id":"htmlwidget-06c04685a7e231d8335f","className":"sparkline html-widget"},"children":[]},{"name":"script","attribs":{"type":"application/json","data-for":"htmlwidget-06c04685a7e231d8335f"},"children":["{\"x\":{\"values\":[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3,3,4,4.4,3.9,3.5,3.8,3.8],\"options\":{\"type\":\"box\",\"height\":30,\"width\":100},\"width\":100,\"height\":30},\"evals\":[],\"jsHooks\":[]}"]}]}]}},{"accessor":"Petal.Length","name":"Petal.Length","type":"numeric","footer":{"name":"WidgetContainer","attribs":{"key":"512edbbff0f82586ae7bd8798bae57b5"},"children":[{"name":"Fragment","attribs":[],"children":[{"name":"span","attribs":{"id":"htmlwidget-4c15c88ef8ee2b4ad8f9","className":"sparkline html-widget"},"children":[]},{"name":"script","attribs":{"type":"application/json","data-for":"htmlwidget-4c15c88ef8ee2b4ad8f9"},"children":["{\"x\":{\"values\":[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5,1.5,1.6,1.4,1.1,1.2,1.5,1.3,1.4,1.7,1.5],\"options\":{\"type\":\"box\",\"height\":30,\"width\":100},\"width\":100,\"height\":30},\"evals\":[],\"jsHooks\":[]}"]}]}]}},{"accessor":"Petal.Width","name":"Petal.Width","type":"numeric","footer":{"name":"WidgetContainer","attribs":{"key":"c8048e034d91651f7c871f8608ebd1c4"},"children":[{"name":"Fragment","attribs":[],"children":[{"name":"span","attribs":{"id":"htmlwidget-b3296e9c903d17f67ab9","className":"sparkline html-widget"},"children":[]},{"name":"script","attribs":{"type":"application/json","data-for":"htmlwidget-b3296e9c903d17f67ab9"},"children":["{\"x\":{\"values\":[0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1,0.2,0.2,0.1,0.1,0.2,0.4,0.4,0.3,0.3,0.3],\"options\":{\"type\":\"box\",\"height\":30,\"width\":100},\"width\":100,\"height\":30},\"evals\":[],\"jsHooks\":[]}"]}]}]}},{"accessor":"Species","name":"Species","type":"factor"}],"defaultPageSize":5,"paginationType":"numbers","showPageInfo":true,"minRows":1,"bordered":true,"dataKey":"073bb41988fe891137663eb8843da608","key":"073bb41988fe891137663eb8843da608"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+
+
+
+
+
+
+---
+
+
+name: ggplot2
+class: inverse, center, middle
+
+# <i class="fa fa-dice-d6" role="presentation" aria-label="dice-d6 icon"></i>
+# Introducción a `ggplot2`
+----
+
+.right[
+.bottom[
+####  [<i class="fa fa-bell" role="presentation" aria-label="bell icon"></i>](#menu)
+]
+]
+
+---
+
+# <i class="fa fa-dice-d6" role="presentation" aria-label="dice-d6 icon"></i> Introducción a `ggplot2`
+
+
+**Las funciones del paquete de ggplot2 `library(ggplot2)` crean un gráfico en capas.** Construiremos un gráfico complejo comenzando con un gráfico simple y agregando elementos adicionales, uno a la vez.
+
+&gt; Al construir un gráfico `ggplot2`, solo se requieren las dos primeras funciones que se describen a continuación. Las otras funciones son opcionales y pueden aparecer en cualquier orden.
+
+
+### 1️⃣ ggplot(): *Siempre debe ser la primera función.*
+
+* `ggplot`: Contiene los datos que se trazarán.
+* `mapping`: Se genera el mapeo de las variables a las propiedades visuales del gráfico. Las asignaciones se colocan dentro de la función `aes` (donde **aes** significa estética).
+
+
+.pull-left[
+
+
+```r
+library(ggplot2)
+
+ggplot(data = iris,
+       mapping = aes(x = Sepal.Length, y = Petal.Length))
+```
+
+.center[
+El gráfico se encuentra vacío ya que no hemos declarado forma. Hemos declarado las variables a los ejes.
+]
+
+]
+
+
+.pull-right[
+
+![](2_Data_files/figure-html/unnamed-chunk-52-1.png)&lt;!-- --&gt;
+
+
+]
+
+
+
+
+---
+
+
+
+# <i class="fa fa-dice-d6" role="presentation" aria-label="dice-d6 icon"></i> Introducción a `ggplot2`
+
+
+**Las funciones del paquete de ggplot2 `library(ggplot2)` crean un gráfico en capas.** Construiremos un gráfico complejo comenzando con un gráfico simple y agregando elementos adicionales, uno a la vez.
+
+&gt; Al construir un gráfico `ggplot2`, solo se requieren las dos primeras funciones que se describen a continuación. Las otras funciones son opcionales y pueden aparecer en cualquier orden.
+
+
+### 2️⃣ geoms(): *Siempre debe ser la segunda función.*
+
+* Los geoms son los objetos geométricos (puntos, líneas, barras, etc.) que se pueden colocar en un gráfico. Se agregan usando funciones que comienzan con `geom_`. Por ejemplo un gráfico de puntos tiene la forma geométrica `geom_point`.
+
+* Lass funciones se encadenan mediante el `+` signo para construir una trama final.
+
+
+.pull-left[
+
+
+```r
+library(ggplot2)
+
+ggplot(data = iris,
+       mapping = aes(x = Sepal.Length, y = Petal.Length))+
+  geom_point()
+```
+
+
+]
+
+
+.pull-right[
+
+![](2_Data_files/figure-html/unnamed-chunk-54-1.png)&lt;!-- --&gt;
+
+
+]
+
+
+
+
+---
+
+
+
+
+# <i class="fa fa-dice-d6" role="presentation" aria-label="dice-d6 icon"></i> Introducción a `ggplot2`
+
+
+### themes
+
+* Podemos ajustar la apariencia del gráfico usando temas. Las funciones del tema (que comienzan con `theme_`) controlan los colores de fondo, las fuentes, las líneas de cuadrícula, la ubicación de las leyendas y otras características del gráfico no relacionadas con los datos.
+
+
+.pull-left[
+
+
+```r
+library(ggplot2)
+
+ggplot(data = iris,
+       mapping = aes(x = Sepal.Length, y = Petal.Length))+
+  geom_point()+
+  theme_minimal()
+```
+
+
+Además de los `theme_` podemos tener múltiples características para mejorar nuestros gráficos, así como formas de contenido. Aquí podemos revisar el 🔗** [CHEAT SHEET de `ggplot2()`](https://www.maths.usyd.edu.au/u/UG/SM/STAT3022/r/current/Misc/data-visualization-2.1.pdf)**
+
+]
+
+
+.pull-right[
+
+![](2_Data_files/figure-html/unnamed-chunk-56-1.png)&lt;!-- --&gt;
+
+
+]
+
+
+
+
+---
+
+
+
+
+
+class: inverse, center, middle
+background-color: #00081d
+
+.pull-left[
+
+.center[
+&lt;br&gt;&lt;br&gt;
+
+# Gracias!!!
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+
+
+### ¿Preguntas?
+]
+
+
+]
+
+
+.pull-right[
+
+&lt;img style="border-radius: 50%;" src="img/avatar.png"
+width="150px"
+/&gt;
+
+### [www.joaquibarandica.com](https://www.joaquibarandica.com)
+<i class="fab fa-twitter" role="presentation" aria-label="twitter icon"></i> jotajb5
+
+<i class="fab fa-github" role="presentation" aria-label="github icon"></i> juniorjb5
+
+<i class="fa fa-envelope" role="presentation" aria-label="envelope icon"></i> orlando.joaqui@correounivalle.edu.co
+
+]
+
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+----
+
+*Las imágenes utilizadas para ambientar la presentación son de [pixabay](https://pixabay.com/).*  
+Sources: [R for the Rest of Us](https://rfortherestofus.com/), Rob Kabacoff
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
