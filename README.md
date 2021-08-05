@@ -8,6 +8,6 @@ En este repositorio podrás encontrar el material módulo Data Visualization del
 
 ### [3. Clase gráficos - ggplot2](https://juniorjb5.github.io/UT-DataViz/3_ggplot2/3_ggplot2.html#1)
 
-### 4. Clase gráficos interactivos
+### [4. Clase gráficos interactivos](https://juniorjb5.github.io/UT-DataViz/4_Interactive/4_Interactive.html#1)
 
 ### 5. Clase dashboards
