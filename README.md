@@ -11,3 +11,5 @@ En este repositorio podrás encontrar el material módulo Data Visualization del
 ### [4. Clase gráficos interactivos](https://juniorjb5.github.io/UT-DataViz/4_Interactive/4_Interactive.html#1)
 
 ### 5. Clase dashboards
+
+#### 📺 [Link Carpeta de grabaciones](https://drive.google.com/drive/folders/1sFce8vfmJTcgl6u7GtGCGI6i-Da4NdUj?usp=sharing)
