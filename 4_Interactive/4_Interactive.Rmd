@@ -1,0 +1,2451 @@
+---
+title: "Data Visualization in R"
+subtitle: "<br/> Interactive Graphs"
+author: "PhD. St. Orlando Joaqui-Barandica"
+institute: "Universidad del Tolima"
+date: "2021"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: 
+      - default
+      - rladies
+      - rladies-fonts
+      - sydney.css
+    seal: false  
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+
+---
+
+
+
+```{r setup, include = FALSE}
+library(knitr)                              # paquete que trae funciones utiles para R Markdown
+library(tidyverse)                          # paquete que trae varios paquetes comunes en el tidyverse
+library(datos)                              # paquete que viene con datos populares traducidos al español :)
+library(shiny)
+library(icons)
+# opciones predeterminadas
+knitr::opts_chunk$set(echo = FALSE,         # FALSE: los bloques de código NO se muestran
+                      dpi = 300,            # asegura gráficos de alta resolución
+                      warning = FALSE,      # los mensajes de advertencia NO se muestran
+                      error = FALSE)        # los mensajes de error NO se muestran
+
+
+options(htmltools.dir.version = FALSE)
+```
+
+class: inverse, left, bottom
+background-image: url("img/back1.jpg")
+background-size: cover
+
+
+# **`r rmarkdown::metadata$title`**
+----
+
+## **`r rmarkdown::metadata$subtitle`**
+
+### `r rmarkdown::metadata$author`
+### `r rmarkdown::metadata$date`
+
+```{r xaringanExtra-share-again, echo=FALSE}
+xaringanExtra::use_share_again()
+```
+
+---
+name: hola
+class: inverse, middle, center
+
+<img style="border-radius: 50%;" src="img/logo.png"
+width="150px"
+/>
+
+# Universidad del Tolima
+
+--
+
+## Diplomado en gestión de datos
+---
+
+
+
+.pull-left[
+
+<br><br><br><br><br>
+
+```{r echo=FALSE, out.width = "110%" }
+knitr::include_graphics("img/gif1.gif")
+```
+]
+
+<br><br><br><br><br>
+
+
+.pull-right[
+# Orlando Joaqui-Barandica
+### [www.joaquibarandica.com](https://www.joaquibarandica.com)
+ *PhD. Student in Industrial Engineering* 
+ 
+ *MSc. Applied Economics*
+ 
+ *BSc. Statistics*
+]
+
+---
+
+name: menu
+background-image: url("img/back2.jpg")
+background-size: cover
+class: left, middle, inverse
+
+# Contenido
+
+----
+
+
+.pull-left[
+### `r icon("creative-commons-remix")` [Mix de gráficos](#Mix)
+
+### `r icon("braille")` [Interactive Graphs](#Interactive)
+
+]
+
+.pull-right[
+
+
+]
+
+---
+
+name: Mix
+class: inverse, center, middle
+
+# `r icon("creative-commons-remix")`
+# Mix de gráficos
+----
+
+.right[
+.bottom[
+####  [`r icon("bell")`](#menu)
+]
+]
+
+---
+
+# `r icon("pushed")` Diagrama de dispersión en 3D
+
+
+El paquete `ggplot2` y sus extensiones no pueden crear una gráfica en 3D. Sin embargo, puede crear un diagrama de dispersión 3D con la función `scatterplot3d` de la librería `scatterplot3d`. 
+
+> Tracemos el kilometraje del automóvil vs al desplazamiento del motor vs al peso del automóvil utilizando los datos del `mtcars`.
+
+
+.pull-left[
+
+`xyz.convert` permite pasar de coordenadas 3D a 2D
+
+
+----
+
+.scroll-box-16[
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(scatterplot3d)
+with(mtcars, {
+  s3d <- scatterplot3d(
+    x = disp, 
+    y = wt, 
+    z = mpg,
+    color = "blue", 
+    pch = 19,      
+    type = "h",
+    main = "3-D Scatterplot Example 3",
+    xlab = "Displacement (cu. in.)",
+    ylab = "Weight (lb/1000)",
+    zlab = "Miles/(US) Gallon")
+  
+  # convert 3-D coords to 2D projection
+  s3d.coords <- s3d$xyz.convert(disp, wt, mpg) 
+  
+  # plot text with 50% shrink and place to right of points
+  text(s3d.coords$x, 
+       s3d.coords$y,   
+       labels = row.names(mtcars),  
+       cex = .5, 
+       pos = 4)
+})
+```
+]
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 5 }
+library(scatterplot3d)
+with(mtcars, {
+  s3d <- scatterplot3d(
+    x = disp, 
+    y = wt, 
+    z = mpg,
+    color = "blue", 
+    pch = 19,      
+    type = "h",
+    main = "3-D Scatterplot Example 3",
+    xlab = "Displacement (cu. in.)",
+    ylab = "Weight (lb/1000)",
+    zlab = "Miles/(US) Gallon")
+  
+  # convert 3-D coords to 2D projection
+  s3d.coords <- s3d$xyz.convert(disp, wt, mpg) 
+  
+  # plot text with 50% shrink and place to right of points
+  text(s3d.coords$x, 
+       s3d.coords$y,   
+       labels = row.names(mtcars),  
+       cex = .5, 
+       pos = 4)
+})
+```
+
+
+]
+
+
+---
+
+
+
+# `r icon("pause")` Biplots
+
+
+Un biplot es un gráfico especializado que intenta representar la relación entre las observaciones, entre las variables y entre las observaciones y las variables. Utilizamos la función `fviz_pca` de la librería `factoextra`.
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+# create a biplot
+# load data
+data(mtcars)
+
+# fit a principal components model
+fit <- prcomp(x = mtcars, 
+              center = TRUE, 
+              scale = TRUE)
+
+# plot the results
+library(factoextra)
+fviz_pca(fit, 
+         repel = TRUE, 
+         labelsize = 3) + 
+  theme_bw() +
+  labs(title = "Biplot of mtcars data")
+})
+```
+
+----
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 5 }
+# create a biplot
+# load data
+data(mtcars)
+
+# fit a principal components model
+fit <- prcomp(x = mtcars, 
+              center = TRUE, 
+              scale = TRUE)
+
+# plot the results
+library(factoextra)
+fviz_pca(fit, 
+         repel = TRUE, 
+         labelsize = 3) + 
+  theme_bw() +
+  labs(title = "Biplot of mtcars data")
+
+```
+
+
+]
+
+
+---
+
+
+# `r icon("pause")` Biplots
+
+
+.pull-left[
+
+* Los puntos representan observaciones. Las distancias más pequeñas entre puntos sugieren valores similares en el conjunto original de variables. Por ejemplo, el Toyota Corolla y el Honda Civic son similares entre sí.
+
+* El Toyota Corolla es muy diferente al Lincoln Continental.
+
+* Los vectores (flechas) representan variables. El ángulo entre vectores es proporcional a la correlación entre las variables. Los ángulos más pequeños indican correlaciones más fuertes. 
+
+* Las observaciones que están más alejadas de la dirección del vector de una variable tienen los valores más altos en esa variable.
+
+* Por ejemplo, el Toyota Corolla y el Honda Civic tienen valores más altos en mpg . El Toyota Corona tiene un mayor qsec .
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 6 }
+# create a biplot
+# load data
+data(mtcars)
+
+# fit a principal components model
+fit <- prcomp(x = mtcars, 
+              center = TRUE, 
+              scale = TRUE)
+
+# plot the results
+library(factoextra)
+fviz_pca(fit, 
+         repel = TRUE, 
+         labelsize = 3) + 
+  theme_bw() +
+  labs(title = "Biplot of mtcars data")
+
+```
+
+
+]
+
+
+---
+
+
+# `r icon("patreon")` Gráficos de burbujas
+
+
+Un gráfico de burbujas es básicamente un diagrama de dispersión donde el tamaño del punto es proporcional a los valores de una tercera variable cuantitativa.
+
+.pull-left[
+
+El parámetro `range` de la función `scale_size_continuous` especifica el tamaño mínimo y máximo del símbolo de trazado. El valor predeterminado es `range=c(1,6)`
+
+El parámetro `shape` de la función `geom_point` especifica un circulo con un color de borde y relleno.
+
+----
+
+.scroll-box-10[
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+# create a bubble plot with modifications
+ggplot(mtcars, 
+       aes(x = wt, y = mpg, size = hp)) +
+  geom_point(alpha = .5, 
+             fill="cornflowerblue", 
+             color="black", 
+             shape=21) +
+  scale_size_continuous(range = c(1, 14)) +
+  labs(title = "Auto mileage by weight and horsepower",
+       subtitle = "Motor Trend US Magazine (1973-74 models)",
+       x = "Weight (1000 lbs)",
+       y = "Miles/(US) gallon",
+       size = "Gross horsepower") 
+```
+]
+
+----
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 5 }
+# create a bubble plot with modifications
+ggplot(mtcars, 
+       aes(x = wt, y = mpg, size = hp)) +
+  geom_point(alpha = .5, 
+             fill="cornflowerblue", 
+             color="black", 
+             shape=21) +
+  scale_size_continuous(range = c(1, 14)) +
+  labs(title = "Auto mileage by weight and horsepower",
+       subtitle = "Motor Trend US Magazine (1973-74 models)",
+       x = "Weight (1000 lbs)",
+       y = "Miles/(US) gallon",
+       size = "Gross horsepower") 
+```
+
+
+]
+
+
+---
+
+
+# `r icon("fire")` Mapas de calor
+
+
+Un mapa de calor muestra un conjunto de datos utilizando mosaicos de colores para cada valor de variable dentro de cada observación. Hay muchas variedades de mapas de calor. Aunque la base de R viene con una la función `heatmap`. La función `superheat` genera un mejor gráfico.
+
+
+.pull-left[
+
+
+> El parámetro `scale = TRUE` estandariza las columnas a una media de cero y una desviación estándar de uno.
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+# create a heatmap
+data(mtcars)
+library(superheat)
+superheat(mtcars, scale = TRUE) 
+```
+
+----
+
+> El Merc 230 tiene un tiempo de cuarto de milla ( qsec ) que está muy por encima del promedio (amarillo brillante). El Lotus Europa tiene un peso muy por debajo de la media (azul oscuro).
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 5 }
+# create a heatmap
+data(mtcars)
+library(superheat)
+superheat(mtcars, scale = TRUE) 
+```
+
+
+]
+
+
+---
+
+
+# `r icon("fire")` Mapas de calor
+
+
+.scroll-output[
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 10 }
+# create a heatmap
+data(mtcars)
+library(superheat)
+superheat(mtcars, scale = TRUE) 
+```
+]
+
+
+---
+
+
+
+# `r icon("fire")` Mapas de calor (Clúster)
+
+
+Podemos utilizar la agrupación en clústeres para ordenar las filas y / o columnas. En el siguiente ejemplo, ordenaremos las filas para que los autos que son similares aparezcan cerca unos de otros. También ajustaremos el tamaño del texto y las etiquetas.
+
+
+.pull-left[
+
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+superheat(mtcars,
+          scale = TRUE,
+          left.label.text.size=3,
+          bottom.label.text.size=3,
+          bottom.label.size = .05,
+          row.dendrogram = TRUE )
+```
+
+----
+
+* La mayoría de los datos son todos númericos
+* Los nombres de las filas se utilizan para etiquetar el eje izquierdo
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 5 }
+superheat(mtcars,
+          scale = TRUE,
+          left.label.text.size=3,
+          bottom.label.text.size=3,
+          bottom.label.size = .05,
+          row.dendrogram = TRUE )
+```
+
+
+]
+
+
+---
+
+
+
+# `r icon("fire")` Mapas de calor (Clúster)
+
+
+.scroll-output[
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 10 }
+superheat(mtcars,
+          scale = TRUE,
+          left.label.text.size=3,
+          bottom.label.text.size=3,
+          bottom.label.size = .05,
+          row.dendrogram = TRUE )
+```
+]
+
+
+---
+
+
+
+
+# `r icon("fire")` Mapas de calor (Ordenados)
+
+
+Usemos un mapa de calor para mostrar los cambios en la esperanza de vida a lo largo del tiempo para los países asiáticos. Dado que los datos están en formato largo , primero tenemos que convertirlos a formato ancho. Luego, debemos asegurarnos de que sea un marco de datos y convertir la variable país en nombres de fila.
+
+
+.pull-left[
+
+
+----
+
+.scroll-box-14[
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+# create heatmap for gapminder data (Asia)
+library(tidyr)
+library(dplyr)
+
+# load data
+data(gapminder, package="gapminder")
+
+# subset Asian countries
+asia <- gapminder %>%
+  filter(continent == "Asia") %>%
+  select(year, country, lifeExp)
+
+# convert to long to wide format
+plotdata <- spread(asia, year, lifeExp)
+
+# save country as row names
+plotdata <- as.data.frame(plotdata)
+row.names(plotdata) <- plotdata$country
+plotdata$country <- NULL
+
+# row order
+sort.order <- order(plotdata$"2007")
+
+# color scheme
+library(RColorBrewer)
+colors <- rev(brewer.pal(5, "Blues"))
+
+
+# create the heat map
+superheat(plotdata,
+          scale = FALSE,
+          left.label.text.size=3,
+          bottom.label.text.size=3,
+          bottom.label.size = .05,
+          heat.pal = colors,
+          order.rows = sort.order,
+          title = "Life Expectancy in Asia")
+```
+]
+
+----
+
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 5 }
+# create heatmap for gapminder data (Asia)
+library(tidyr)
+library(dplyr)
+
+# load data
+data(gapminder, package="gapminder")
+
+# subset Asian countries
+asia <- gapminder %>%
+  filter(continent == "Asia") %>%
+  select(year, country, lifeExp)
+
+# convert to long to wide format
+plotdata <- spread(asia, year, lifeExp)
+
+# save country as row names
+plotdata <- as.data.frame(plotdata)
+row.names(plotdata) <- plotdata$country
+plotdata$country <- NULL
+
+# row order
+sort.order <- order(plotdata$"2007")
+
+# color scheme
+library(RColorBrewer)
+colors <- rev(brewer.pal(5, "Blues"))
+
+
+# create the heat map
+superheat(plotdata,
+          scale = FALSE,
+          left.label.text.size=3,
+          bottom.label.text.size=3,
+          bottom.label.size = .05,
+          heat.pal = colors,
+          order.rows = sort.order,
+          title = "Life Expectancy in Asia")
+```
+
+
+]
+
+
+---
+
+
+
+# `r icon("fire")` Mapas de calor (Ordenados)
+
+
+.scroll-output[
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 10 }
+# create heatmap for gapminder data (Asia)
+library(tidyr)
+library(dplyr)
+
+# load data
+data(gapminder, package="gapminder")
+
+# subset Asian countries
+asia <- gapminder %>%
+  filter(continent == "Asia") %>%
+  select(year, country, lifeExp)
+
+# convert to long to wide format
+plotdata <- spread(asia, year, lifeExp)
+
+# save country as row names
+plotdata <- as.data.frame(plotdata)
+row.names(plotdata) <- plotdata$country
+plotdata$country <- NULL
+
+# row order
+sort.order <- order(plotdata$"2007")
+
+# color scheme
+library(RColorBrewer)
+colors <- rev(brewer.pal(5, "Blues"))
+
+
+# create the heat map
+superheat(plotdata,
+          scale = FALSE,
+          left.label.text.size=3,
+          bottom.label.text.size=3,
+          bottom.label.size = .05,
+          heat.pal = colors,
+          order.rows = sort.order,
+          title = "Life Expectancy in Asia")
+
+```
+]
+
+
+---
+
+
+
+
+
+# `r icon("life-ring")` Gráfico de radar
+
+
+Un gráfico de radar (también llamado gráfico de araña o estrella) muestra uno o más grupos u observaciones sobre tres o más variables cuantitativas. Cada variable tiene su propio eje, todos los ejes están unidos en el centro de la figura.
+
+
+.pull-left[
+
+
+----
+
+.scroll-box-14[
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+# Libraries
+library(tidyverse)
+library(viridis)
+library(patchwork)
+library(hrbrthemes)
+library(fmsb)
+library(colormap)
+
+# Create data
+set.seed(1)
+data <- as.data.frame(matrix( sample( 2:20 , 10 , replace=T) , ncol=10))
+colnames(data) <- c("math" , "english" , "biology" , "music" , "R-coding", "data-viz" , "french" , "physic", "statistic", "sport" )
+
+# To use the fmsb package, I have to add 2 lines to the dataframe: the max and min of each topic to show on the plot!
+data <- rbind(rep(20,10) , rep(0,10) , data)
+
+# Custom the radarChart !
+par(mar=c(0,0,0,0))
+radarchart( data, axistype=1, 
+
+  #custom polygon
+  pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=4 , 
+
+  #custom the grid
+  cglcol="grey", cglty=1, axislabcol="grey", caxislabels=seq(0,20,5), cglwd=0.8,
+
+  #custom labels
+  vlcex=0.8 
+  )
+
+```
+]
+
+----
+
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 5 }
+# Libraries
+library(tidyverse)
+library(viridis)
+library(patchwork)
+library(hrbrthemes)
+library(fmsb)
+library(colormap)
+
+# Create data
+set.seed(1)
+data <- as.data.frame(matrix( sample( 2:20 , 10 , replace=T) , ncol=10))
+colnames(data) <- c("math" , "english" , "biology" , "music" , "R-coding", "data-viz" , "french" , "physic", "statistic", "sport" )
+
+# To use the fmsb package, I have to add 2 lines to the dataframe: the max and min of each topic to show on the plot!
+data <- rbind(rep(20,10) , rep(0,10) , data)
+
+# Custom the radarChart !
+par(mar=c(0,0,0,0))
+radarchart( data, axistype=1, 
+
+  #custom polygon
+  pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=4 , 
+
+  #custom the grid
+  cglcol="grey", cglty=1, axislabcol="grey", caxislabels=seq(0,20,5), cglwd=0.8,
+
+  #custom labels
+  vlcex=0.8 
+  )
+
+```
+
+
+]
+
+
+---
+
+
+# `r icon("qrcode")` Matriz de gráficos de dispersión
+
+
+Una matriz de diagramas de dispersión es una colección de diagramas de dispersión organizados como una cuadrícula. Es similar a un gráfico de correlación, pero en lugar de mostrar correlaciones, muestra los datos subyacentes.
+
+
+.pull-left[
+
+Puede crear una matriz de diagrama de dispersión usando la función `ggpairs` en el paquete `GGally`.
+
+Podemos ilustrar su uso examinando las relaciones entre el tamaño de los mamíferos y las características del sueño.
+
+----
+
+.scroll-box-14[
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(GGally)
+
+# prepare data
+data(msleep, package="ggplot2")
+library(dplyr)
+df <- msleep %>% 
+  mutate(log_brainwt = log(brainwt),
+         log_bodywt = log(bodywt)) %>%
+  select(log_brainwt, log_bodywt, sleep_total, sleep_rem)
+ 
+
+# create a scatterplot matrix
+ggpairs(df)
+```
+]
+
+----
+
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 5 }
+library(GGally)
+
+# prepare data
+data(msleep, package="ggplot2")
+library(dplyr)
+df <- msleep %>% 
+  mutate(log_brainwt = log(brainwt),
+         log_bodywt = log(bodywt)) %>%
+  select(log_brainwt, log_bodywt, sleep_total, sleep_rem)
+ 
+
+# create a scatterplot matrix
+ggpairs(df)
+```
+
+
+]
+
+
+---
+
+
+
+# `r icon("sellsy")` Gráficos de cascada
+
+
+Un gráfico de cascada ilustra el efecto acumulativo de una secuencia de valores positivos y negativos. Por ejemplo, podemos graficar el efecto acumulativo de ingresos y gastos para una empresa ficticia.
+
+
+.pull-left[
+
+----
+
+.scroll-box-14[
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+# create company income statement
+category <- c("Sales", "Services", "Fixed Costs", 
+              "Variable Costs", "Taxes")
+amount <- c(101000, 52000, -23000, -15000, -10000)
+income <- data.frame(category, amount) 
+
+# create waterfall chart
+library(ggplot2)
+library(waterfalls)
+waterfall(income) 
+```
+]
+
+----
+
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 5 }
+# create company income statement
+category <- c("Sales", "Services", "Fixed Costs", 
+              "Variable Costs", "Taxes")
+amount <- c(101000, 52000, -23000, -15000, -10000)
+income <- data.frame(category, amount) 
+
+# create waterfall chart
+library(ggplot2)
+library(waterfalls)
+waterfall(income, calc_total = TRUE) 
+```
+
+
+]
+
+
+---
+
+
+
+
+# `r icon("react")` Wordcloud
+
+
+Una nube de palabras (también llamada nube de etiquetas) es básicamente una infografía que indica la frecuencia de palabras en una colección de texto (por ejemplo, tweets, un documento de texto, un conjunto de documentos de texto).
+
+
+.pull-left[
+
+----
+
+.scroll-box-14[
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library("quanteda")
+library("quanteda.textplots")
+
+dfm_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) %>% 
+    dfm(remove = stopwords('english'), remove_punct = TRUE) %>%
+    dfm_trim(min_termfreq = 10, verbose = FALSE)
+
+textplot_wordcloud(dfm_inaug)
+```
+]
+
+----
+
+
+]
+
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE , fig.height = 5 }
+library("quanteda")
+library("quanteda.textplots")
+
+dfm_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) %>% 
+    dfm(remove = stopwords('english'), remove_punct = TRUE) %>%
+    dfm_trim(min_termfreq = 10, verbose = FALSE)
+
+textplot_wordcloud(dfm_inaug)
+```
+
+
+]
+
+
+---
+
+
+
+name: Interactive
+class: inverse, center, middle
+
+# `r icon("braille")`
+# Interactive Graphs
+----
+
+.right[
+.bottom[
+####  [`r icon("bell")`](#menu)
+]
+]
+
+
+
+
+---
+
+
+# `r icon("map-marker-alt")` Leaflet
+
+
+`Leaflet` es una biblioteca de `JavaScript` para mapas interactivos. El prospecto se puede utilizar para generar los gráficos de prospecto **R**.
+
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+# create leaflet graph
+library(leaflet)
+
+leaflet() %>%
+  addTiles()
+
+
+```
+
+----
+
+
+]
+
+
+.pull-right[
+
+* addTiles() De forma predeterminada utiliza la base de OpenStreetMap
+* addMarkers() Se pueden ir agregando capas al mapa..
+* addCircles()
+* addCircleMarkers()
+* addPolylines()
+* etc... 
+* Puede consultar la ayuda de la función: [leaflet()](https://cran.r-project.org/web/packages/leaflet/leaflet.pdf) 
+
+]
+
+
+---
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, out.width="100%" , out.height="70%"}
+# create leaflet graph
+library(leaflet)
+
+leaflet() %>% 
+  addTiles()
+
+```
+
+
+---
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, out.width="100%" , out.height="70%"}
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng=-75.217, 
+             lat=4.433, 
+             popup="Ibagué - Tolima")
+```
+
+
+
+---
+
+
+class: inverse
+background-color: #ABB2B9
+
+# `r icon("map-marker-alt")` Leaflet
+
+.scroll-box-20[
+
+
+````markdown
+
+########### Leaflet
+
+
+library(leaflet)
+library(rgdal)
+
+#####Grafico de shapefile
+dpto <- readOGR("4_Interactive/shp_dpto/MGN_DPTO_POLITICO.shp")
+plot(dpto)
+
+
+#####Grafico en leaflet
+leaflet(dpto) %>% 
+  addPolygons()
+
+
+####Con color y etiquetas
+leaflet(dpto) %>% 
+addPolygons(
+  fillColor = "red",
+  weight = 2,
+  opacity = 1,
+  color = "white",
+  dashArray = "3",
+  fillOpacity = 0.7,
+  highlight = highlightOptions(
+    weight = 5,
+    color = "#666",
+    dashArray = "",
+    fillOpacity = 0.7,
+    bringToFront = TRUE),
+  label = dpto$DPTO_CNMBR)
+
+
+#### CAPAS
+
+basemap <- leaflet() %>%
+  # add different provider tiles
+  addProviderTiles(
+    "OpenStreetMap",
+    # give the layer a name
+    group = "OpenStreetMap"
+  ) %>%
+  addProviderTiles(
+    "Stamen.Toner",
+    group = "Stamen.Toner"
+  ) %>%
+  addProviderTiles(
+    "Stamen.Terrain",
+    group = "Stamen.Terrain"
+  ) %>%
+  addProviderTiles(
+    "Esri.WorldStreetMap",
+    group = "Esri.WorldStreetMap"
+  ) %>%
+  addProviderTiles(
+    "Wikimedia",
+    group = "Wikimedia"
+  ) %>%
+  addProviderTiles(
+    "CartoDB.Positron",
+    group = "CartoDB.Positron"
+  ) %>%
+  addProviderTiles(
+    "Esri.WorldImagery",
+    group = "Esri.WorldImagery"
+  ) %>%
+  # add a layers control
+  addLayersControl(
+    baseGroups = c(
+      "OpenStreetMap", "Stamen.Toner",
+      "Stamen.Terrain", "Esri.WorldStreetMap",
+      "Wikimedia", "CartoDB.Positron", "Esri.WorldImagery"
+    ),
+    # position it on the topleft
+    position = "topleft"
+  )
+
+
+basemap
+
+
+
+##############################################################
+
+basemap %>% 
+  addPolygons(data=dpto,
+    fillColor = "red",
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlight = highlightOptions(
+      weight = 5,
+      color = "#666",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = dpto$DPTO_CNMBR)
+
+
+##############################################################
+
+
+
+covid_geo<- readRDS("4_Interactive/covid_geo.RDS")
+
+covid_geo
+
+
+
+basemap %>% 
+  addPolygons(data=dpto,
+              fillColor = "red",
+              weight = 2,
+              opacity = 1,
+              color = "white",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                dashArray = "",
+                fillOpacity = 0.7,
+                bringToFront = TRUE),
+              label = dpto$DPTO_CNMBR)  %>% 
+  addMarkers(data=covid_geo,
+             ~Longitud,~Latitud,popup = ~as.character(Casos),
+             label = ~as.character(Casos))
+
+
+###################################################################
+
+
+
+leaflet(dpto) %>% 
+  addPolygons(
+              fillColor = "red",
+              weight = 2,
+              opacity = 1,
+              color = "white",
+              dashArray = "3",
+              fillOpacity = 0.7,
+              highlight = highlightOptions(
+                weight = 5,
+                color = "#666",
+                dashArray = "",
+                fillOpacity = 0.7,
+                bringToFront = TRUE),
+              label = dpto$DPTO_CNMBR)  %>% 
+  addMarkers(data=covid_geo,
+             ~Longitud,~Latitud,popup = ~as.character(Casos),
+             label = ~as.character(Casos)) %>% 
+  addLegend(
+    colors = "#E84A5F",
+    labels = "Casos Covid-Colombia",
+    title = "2021",
+    opacity = 1, 
+    position = "bottomleft"
+  )
+
+
+#####################################################################
+
+
+# Crear colores variable categórica
+factpal <- colorFactor(topo.colors(47), dpto$DPTO_CCDGO)
+
+# Crear colores variable númerica
+pal <- colorNumeric(
+  palette = "Blues",
+  domain = dpto$SHAPE_AREA)
+
+
+# Color categorico
+leaflet(dpto) %>% 
+addPolygons(
+  fillColor = ~factpal(DPTO_CCDGO),
+  weight = 2,
+  opacity = 1,
+  color = "white",
+  dashArray = "3",
+  fillOpacity = 0.7,
+  highlight = highlightOptions(
+    weight = 5,
+    color = "#666",
+    dashArray = "",
+    fillOpacity = 0.7,
+    bringToFront = TRUE),
+  label = dpto$DPTO_CNMBR)
+
+
+
+# Color númerico
+leaflet(dpto) %>% 
+  addPolygons(
+    fillColor = ~pal(SHAPE_AREA),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlight = highlightOptions(
+      weight = 5,
+      color = "#666",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = dpto$DPTO_CNMBR)
+
+
+###############################################
+# Actividad Final
+
+# Realice el mapa para Tolima y los casos covid por municipios.
+
+
+
+MPIO <- readOGR("4_Interactive/shp_mcpio/MGN_MPIO_POLITICO.shp")
+Tolima<-subset(MPIO, MPIO$DPTO_CCDGO %in% c("73"))
+
+
+leaflet(Tolima) %>% 
+  addPolygons()
+
+
+````
+
+]
+
+
+  
+
+---
+
+# `r icon("fan")` Plotly
+
+
+`Plotly` es un servicio comercial y un producto de código abierto para crear visualizaciones interactivas de alta gama. El paquete `plotly` le permite crear gráficos interactivos desde dentro de **R**. Además, cualquier gráfico `ggplot2` se puede convertir en un gráfico `plotly`.
+
+.pull-left[
+
+Dentro de esta librería destaca la función: 
+
+## ggplotly()
+
+> Esta función es escencial para convertir un gráfico estático de `ggplot` a dinámico en `plotly`
+
+Es vital que el gráfico se guarde en un objeto.
+
+]
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+# create plotly graph.
+library(ggplot2)
+library(plotly)
+
+p <- ggplot(mpg, aes(x=displ, 
+                     y=hwy, 
+                     color=class)) +
+  geom_point(size=3) +
+  labs(x = "Engine displacement",
+       y = "Highway Mileage",
+       color = "Car Class") +
+  theme_bw()
+
+ggplotly(p)
+```
+
+
+]
+
+
+---
+
+
+
+# `r icon("fan")` ggplotly
+
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+# create plotly graph.
+library(ggplot2)
+library(plotly)
+
+p <- ggplot(mpg, aes(x=displ, 
+                     y=hwy, 
+                     color=class)) +
+  geom_point(size=3) +
+  labs(x = "Engine displacement",
+       y = "Highway Mileage",
+       color = "Car Class") +
+  theme_bw()
+
+ggplotly(p)
+```
+
+----
+
+]
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+# create plotly graph.
+library(ggplot2)
+library(plotly)
+
+p <- ggplot(mpg, aes(x=displ, 
+                     y=hwy, 
+                     color=class)) +
+  geom_point(size=3) +
+  labs(x = "Engine displacement",
+       y = "Highway Mileage",
+       color = "Car Class") +
+  theme_bw()
+
+ggplotly(p)
+```
+
+
+]
+
+
+---
+
+
+
+# `r icon("fan")` ggplotly
+
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+# Build dataset with different distributions
+data <- data.frame(
+  type = c( rep("edge peak", 1000), rep("comb", 1000), rep("normal", 1000), rep("uniform", 1000), rep("bimodal", 1000), rep("skewed", 1000) ),
+  value = c( rnorm(900), rep(3, 100), rnorm(360, sd=0.5), rep(c(-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75), 80), rnorm(1000), runif(1000), rnorm(500, mean=-2), rnorm(500, mean=2), abs(log(rnorm(1000))) )
+)
+
+# Represent it
+p<-data %>%
+  ggplot( aes(x=value)) +
+    geom_histogram(fill="#69b3a2", color="#e9ecef", alpha=0.9) +
+    facet_wrap(~type, scale="free_x") +
+    theme_ipsum() +
+    theme(
+      panel.spacing = unit(0.1, "lines"),
+      axis.title.x=element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank()
+    )
+
+ggplotly(p)
+```
+
+----
+
+]
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+# Build dataset with different distributions
+data <- data.frame(
+  type = c( rep("edge peak", 1000), rep("comb", 1000), rep("normal", 1000), rep("uniform", 1000), rep("bimodal", 1000), rep("skewed", 1000) ),
+  value = c( rnorm(900), rep(3, 100), rnorm(360, sd=0.5), rep(c(-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75), 80), rnorm(1000), runif(1000), rnorm(500, mean=-2), rnorm(500, mean=2), abs(log(rnorm(1000))) )
+)
+
+# Represent it
+p<-data %>%
+  ggplot( aes(x=value)) +
+    geom_histogram(fill="#69b3a2", color="#e9ecef", alpha=0.9) +
+    facet_wrap(~type, scale="free_x") +
+    theme_ipsum() +
+    theme(
+      panel.spacing = unit(0.1, "lines"),
+      axis.title.x=element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank()
+    )
+
+ggplotly(p)
+```
+
+
+]
+
+
+---
+
+class: inverse
+background-color: #D35400 
+
+# `r icon("fan")` ggplotly
+
+
+.left-column[
+
+.center[
+
+
+![](https://media.giphy.com/media/oimCQlndn6KPe/giphy.gif)
+
+
+]
+]
+
+
+.right-column[
+
+----
+
+## Actividad
+
+### Seleccione 5 gráficos de la presentación anterior y presentelos en forma dinámica con la función `ggplotly`
+
+.center[
+![](https://media.giphy.com/media/jUoJIjFlLDojK/giphy.gif)
+]
+
+]
+
+----
+
+---
+
+
+
+# `r icon("fan")` Plotly
+
+
+Si el objetivo es desarrollar el gráfico directamente con la librería `plotly` y no con la librería `ggplot2`, se puede utilizar `plot_ly`.
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(plotly)
+
+fig <- plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length)
+
+fig
+```
+
+----
+
+]
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+library(plotly)
+
+fig <- plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length)
+
+fig
+```
+
+
+]
+
+
+
+
+---
+
+
+
+
+# `r icon("fan")` Plotly
+
+
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(plotly)
+
+fig <- plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length, color = ~Species)
+
+fig
+```
+
+----
+
+]
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+library(plotly)
+
+fig <- plot_ly(data = iris, x = ~Sepal.Length, y = ~Petal.Length, color = ~Species)
+
+fig
+```
+
+
+]
+
+
+
+
+---
+
+
+
+# `r icon("fan")` Plotly
+
+
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(plotly)
+
+fig <- plot_ly(
+  x = c("giraffes", "orangutans", "monkeys"),
+  y = c(20, 14, 23),
+  name = "SF Zoo",
+  type = "bar"
+)
+
+fig
+```
+
+----
+
+]
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+library(plotly)
+
+fig <- plot_ly(
+  x = c("giraffes", "orangutans", "monkeys"),
+  y = c(20, 14, 23),
+  name = "SF Zoo",
+  type = "bar"
+)
+
+fig
+```
+
+
+]
+
+
+---
+
+
+
+
+# `r icon("fan")` Plotly
+
+
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(plotly)
+
+Animals <- c("giraffes", "orangutans", "monkeys")
+SF_Zoo <- c(20, 14, 23)
+LA_Zoo <- c(12, 18, 29)
+data <- data.frame(Animals, SF_Zoo, LA_Zoo)
+
+fig <- plot_ly(data, x = ~Animals, y = ~SF_Zoo, type = 'bar', name = 'SF Zoo')
+fig <- fig %>% add_trace(y = ~LA_Zoo, name = 'LA Zoo')
+fig <- fig %>% layout(yaxis = list(title = 'Count'), barmode = 'group')
+
+fig
+```
+
+----
+
+]
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+library(plotly)
+
+Animals <- c("giraffes", "orangutans", "monkeys")
+SF_Zoo <- c(20, 14, 23)
+LA_Zoo <- c(12, 18, 29)
+data <- data.frame(Animals, SF_Zoo, LA_Zoo)
+
+fig <- plot_ly(data, x = ~Animals, y = ~SF_Zoo, type = 'bar', name = 'SF Zoo')
+fig <- fig %>% add_trace(y = ~LA_Zoo, name = 'LA Zoo')
+fig <- fig %>% layout(yaxis = list(title = 'Count'), barmode = 'group')
+
+fig
+```
+
+
+]
+
+
+
+
+---
+
+
+
+
+
+# `r icon("fan")` Plotly
+
+
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(plotly)
+
+USPersonalExpenditure <- data.frame("Categorie"=rownames(USPersonalExpenditure), USPersonalExpenditure)
+data <- USPersonalExpenditure[,c('Categorie', 'X1960')]
+
+fig <- plot_ly(data, labels = ~Categorie, values = ~X1960, type = 'pie')
+fig <- fig %>% layout(title = 'United States Personal Expenditures by Categories in 1960',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+
+fig
+```
+
+----
+
+]
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+library(plotly)
+
+USPersonalExpenditure <- data.frame("Categorie"=rownames(USPersonalExpenditure), USPersonalExpenditure)
+data <- USPersonalExpenditure[,c('Categorie', 'X1960')]
+
+fig <- plot_ly(data, labels = ~Categorie, values = ~X1960, type = 'pie')
+fig <- fig %>% layout(title = 'United States Personal Expenditures by Categories in 1960',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+
+fig
+```
+
+
+]
+
+
+
+
+---
+
+
+# `r icon("fan")` Plotly
+
+
+.pull-left[
+
+----
+
+````markdown
+library(plotly)
+
+# volcano is a numeric matrix that ships with R
+fig.3d <- plot_ly(z = ~volcano)
+fig.3d <- fig.3d %>% add_surface()
+
+fig.3d
+
+````
+
+----
+
+]
+
+
+.pull-right[
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE }
+
+library(plotly)
+# volcano is a numeric matrix that ships with R
+fig.3d <- plot_ly(z = ~volcano)
+fig.3d <- fig.3d %>% add_surface()
+
+htmltools::save_html(fig.3d, file="img/fig.3d.html")
+
+```
+
+.center[
+<iframe src="img/fig.3d.html" allowtransparency="true" height="450" width="1100" scrolling="yes" style="border: none;" data-external="1"></iframe>
+]
+
+
+]
+
+
+---
+
+
+
+# `r icon("fan")` Plotly
+
+
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(plotly)
+df <- read.csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv')
+fig <- plot_ly(
+  type = "scatter",
+  x = as.Date(df$Date, format= "%Y-%m-%d"), 
+  y = df$AAPL.High,
+  name = 'AAPL High',
+  mode = "lines",
+)
+fig <- fig %>%
+  layout(
+    title = "Time Series with Custom Date-Time Format",
+    xaxis = list(
+      type = "date",
+      range=c('2015-12-01', '2016-01-15')
+    )
+  )
+fig
+```
+
+----
+
+]
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+library(plotly)
+df <- read.csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv')
+fig <- plot_ly(
+  type = "scatter",
+  x = as.Date(df$Date, format= "%Y-%m-%d"), 
+  y = df$AAPL.High,
+  name = 'AAPL High',
+  mode = "lines",
+)
+fig <- fig %>%
+  layout(
+    title = "Time Series with Custom Date-Time Format",
+    xaxis = list(
+      type = "date",
+      range=c('2015-12-01', '2016-01-15')
+    )
+  )
+fig
+```
+
+
+]
+
+
+
+---
+
+
+
+# `r icon("fan")` Plotly
+
+* Consultar más estilos: [Plotly in R](https://plotly.com/r/)
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(plotly)
+library(gapminder)
+
+df <- gapminder 
+fig <- df %>%
+  plot_ly(
+    x = ~gdpPercap, 
+    y = ~lifeExp, 
+    size = ~pop, 
+    color = ~continent, 
+    frame = ~year, 
+    text = ~country, 
+    hoverinfo = "text",
+    type = 'scatter',
+    mode = 'markers'
+  )
+fig <- fig %>% layout(
+    xaxis = list(
+      type = "log"
+    )
+  )
+
+fig
+```
+
+----
+
+]
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+
+library(plotly)
+library(gapminder)
+
+df <- gapminder 
+fig <- df %>%
+  plot_ly(
+    x = ~gdpPercap, 
+    y = ~lifeExp, 
+    size = ~pop, 
+    color = ~continent, 
+    frame = ~year, 
+    text = ~country, 
+    hoverinfo = "text",
+    type = 'scatter',
+    mode = 'markers'
+  )
+fig <- fig %>% layout(
+    xaxis = list(
+      type = "log"
+    )
+  )
+
+fig
+```
+
+
+]
+
+
+
+
+
+---
+
+# `r icon("grip-vertical")` rCharts
+
+
+
+.pull-left[
+
+----
+
+````markdown
+require(devtools)
+install_github('ramnathv/rCharts')
+
+
+library(rCharts)
+data(economics, package = "ggplot2")
+econ <- transform(economics, date = as.character(date))
+m1 <- mPlot(x = "date", y = c("psavert", "uempmed"), type = "Line", data = econ)
+m1$set(pointSize = 0, lineWidth = 1)
+
+m1
+````
+
+----
+
+]
+
+
+.pull-right[
+
+> `rCharts` puede crear una amplia gama de gráficos interactivos.
+
+* `rCharts` es un paquete de **R** para crear, personalizar y publicar visualizaciones javascript interactivas desde **R** utilizando una interfaz de trazado de estilo `lattice`.
+
+* Es necesaria su instalación desde el entorno de desarrolladores: *Github*
+
+* Requiere apriori la librería `devtools`
+
+
+````markdown
+
+require(devtools)
+install_github('ramnathv/rCharts')
+
+````
+
+* Consultar la página del desarrollador: [https://github.com/ramnathv/rCharts](https://github.com/ramnathv/rCharts)
+
+]
+
+
+
+---
+
+
+
+# `r icon("h-square")` Highcharter
+
+
+
+.pull-left[
+
+El paquete `highcharter` proporciona acceso a la biblioteca de gráficos JavaScript **Highcharts**. La biblioteca es gratuita para uso no comercial. Aquí, hay una muestra de algunos gráficos. Consultar más en la web [Highchart](https://www.highcharts.com/blog/posts/frameworks/r-stat/)
+
+* **Histogramas:**
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+
+library(highcharter)
+
+x <- c(rnorm(10000), rnorm(1000, 4, 0.5))
+
+hchart(x, name = "data") 
+```
+
+
+* **Series:**
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(highcharter)
+library(forecast)
+
+airforecast <- forecast(auto.arima(AirPassengers), level = 95)
+
+hchart(airforecast)
+```
+
+
+]
+
+.pull-right[
+
+* **Mapas:**
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(treemap)
+library(highcharter)
+
+data(GNI2014, package = "treemap")
+
+hcmap(
+  "custom/world-robinson-lowres", 
+  data = GNI2014,
+  name = "Gross national income per capita", 
+  value = "GNI",
+  borderWidth = 0,
+  nullColor = "#d3d3d3",
+  joinBy = c("iso-a3", "iso3")
+) %>%
+  hc_colorAxis(
+    stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
+    type = "logarithmic"
+  ) 
+
+```
+
+]
+
+---
+
+# `r icon("h-square")` Highcharter
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+library(highcharter)
+
+x <- c(rnorm(10000), rnorm(1000, 4, 0.5))
+
+hchart(x, name = "data") 
+```
+
+
+---
+
+
+
+# `r icon("h-square")` Highcharter
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+library(highcharter)
+library(forecast)
+
+airforecast <- forecast(auto.arima(AirPassengers), level = 95)
+
+hchart(airforecast)
+```
+
+
+
+
+---
+
+
+# `r icon("h-square")` Highcharter
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.height= "1%", out.width="100%"  }
+library(treemap)
+library(highcharter)
+
+data(GNI2014, package = "treemap")
+
+hcmap(
+  "custom/world-robinson-lowres", 
+  data = GNI2014,
+  name = "Gross national income per capita", 
+  value = "GNI",
+  borderWidth = 0,
+  nullColor = "#d3d3d3",
+  joinBy = c("iso-a3", "iso3")
+) %>%
+  hc_colorAxis(
+    stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
+    type = "logarithmic"
+  ) 
+
+```
+
+
+
+
+---
+
+
+# `r icon("grin-wink")` gganimate()
+
+
+.pull-left[
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(ggplot2)
+library(dplyr)
+
+library(gapminder)
+datos = gapminder
+
+
+grafico <- datos %>%
+  ggplot() + 
+    geom_point(aes(x = gdpPercap, y = lifeExp, col = continent, size = pop), alpha = 0.8) + theme_minimal() + 
+    theme(legend.position = "bottom") + guides(size = "none") + 
+    labs(x = "PIB per Capita" ,y = "Esperanza de Vida",  col = "") 
+
+
+library(gganimate)
+
+grafico +
+  transition_time(year)+
+  labs(title = "Año: {frame_time}")
+
+```
+
+----
+
+]
+
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.height= 6 }
+library(ggplot2)
+library(dplyr)
+
+library(gapminder)
+datos = gapminder
+
+
+grafico <- datos %>%
+  ggplot() + 
+    geom_point(aes(x = gdpPercap, y = lifeExp, col = continent, size = pop), alpha = 0.8) + theme_minimal() + 
+    theme(legend.position = "bottom") + guides(size = "none") + 
+    labs(x = "PIB per Capita" ,y = "Esperanza de Vida",  col = "") 
+
+
+library(gganimate)
+
+grafico +
+  transition_time(year)+
+  labs(title = "Año: {frame_time}")
+
+
+```
+
+
+
+]
+
+
+
+---
+
+
+
+
+# `r icon("grin-wink")` gganimate()
+
+
+.pull-left[
+
+----
+
+.scroll-box-20[
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+library(ggplot2)
+library(dplyr)
+
+library(gapminder)
+datos = gapminder
+
+
+datos2 <- datos %>%
+  group_by(year) %>%
+  arrange(year, desc(gdpPercap)) %>%
+  mutate(ranking = row_number()) %>%
+  filter(ranking <=15)
+
+
+animacion <- datos2 %>%
+  ggplot() +
+  geom_col(aes(ranking, gdpPercap, fill = country)) +
+  geom_text(aes(ranking, gdpPercap, label = gdpPercap), hjust=-0.1) +
+  geom_text(aes(ranking, y=0 , label = country), hjust=1.1) + 
+  geom_text(aes(x=15, y=max(gdpPercap) , label = as.factor(year)), vjust = 0.2, alpha = 0.5,  col = "gray", size = 20) +
+  coord_flip(clip = "off", expand = FALSE) + scale_x_reverse() +
+  theme_minimal() + theme(
+    panel.grid = element_blank(), 
+    legend.position = "none",
+    axis.ticks.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    plot.margin = margin(1, 4, 1, 3, "cm")
+  ) +
+  transition_states(year, state_length = 0, transition_length = 2) +
+  enter_fade() +
+  exit_fade() + 
+  ease_aes('quadratic-in-out') 
+
+animate(animacion, width = 700, height = 432, fps = 25, duration = 15, rewind = FALSE)
+
+```
+]
+
+----
+
+]
+
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.height= 6 }
+library(ggplot2)
+library(dplyr)
+
+library(gapminder)
+datos = gapminder
+
+
+datos2 <- datos %>%
+  group_by(year) %>%
+  arrange(year, desc(gdpPercap)) %>%
+  mutate(ranking = row_number()) %>%
+  filter(ranking <=15)
+
+
+animacion <- datos2 %>%
+  ggplot() +
+  geom_col(aes(ranking, gdpPercap, fill = country)) +
+  geom_text(aes(ranking, gdpPercap, label = gdpPercap), hjust=-0.1) +
+  geom_text(aes(ranking, y=0 , label = country), hjust=1.1) + 
+  geom_text(aes(x=15, y=max(gdpPercap) , label = as.factor(year)), vjust = 0.2, alpha = 0.5,  col = "gray", size = 20) +
+  coord_flip(clip = "off", expand = FALSE) + scale_x_reverse() +
+  theme_minimal() + theme(
+    panel.grid = element_blank(), 
+    legend.position = "none",
+    axis.ticks.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    plot.margin = margin(1, 4, 1, 3, "cm")
+  ) +
+  transition_states(year, state_length = 0, transition_length = 2) +
+  enter_fade() +
+  exit_fade() + 
+  ease_aes('quadratic-in-out') 
+
+animate(animacion, width = 700, height = 432, fps = 25, duration = 15, rewind = FALSE)
+
+
+```
+
+
+
+]
+
+
+
+---
+
+# `r icon("grin-wink")` gganimate()
+
+
+
+.pull-left[
+
+----
+
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+datos %>%
+  filter(country == "Spain") %>%
+  ggplot(aes(year, pop)) + geom_point() + geom_line() + 
+  geom_text(aes(x = min(year), y = min(pop), label = as.factor(year)) , hjust=-2, vjust = -0.2, alpha = 0.5,  col = "gray", size = 20) +
+  theme_minimal() +
+  transition_reveal(year) + 
+  view_follow()
+
+```
+
+
+----
+
+]
+
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.height= 5 }
+
+datos %>%
+  filter(country == "Spain") %>%
+  ggplot(aes(year, pop)) + geom_point() + geom_line() + 
+  geom_text(aes(x = min(year), y = min(pop), label = as.factor(year)) , hjust=-2, vjust = -0.2, alpha = 0.5,  col = "gray", size = 20) +
+  theme_minimal() +
+  transition_reveal(year) + 
+  view_follow()
+
+```
+
+
+
+]
+
+
+---
+
+
+
+# `r icon("grin-wink")` gganimate()
+
+
+
+
+.pull-left[
+
+> Si quiere informarse más puede hacer en el manual de la función [`gganimate()`](https://cran.r-project.org/web/packages/gganimate/gganimate.pdf)
+
+----
+
+```{r eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE , fig.height = 4}
+p1 <- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+             geom_point(alpha = 0.7, show.legend = FALSE) +
+             scale_colour_manual(values = country_colors) +
+             scale_size(range = c(2, 12)) +
+             scale_x_log10() +
+             facet_wrap(~continent) +
+ # Animating the plot
+             labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'Life expectancy') +
+             transition_time(year) +
+             ease_aes('linear')
+
+animate(p1)
+
+```
+
+----
+
+]
+
+
+
+.pull-right[
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.height= 5 }
+p1 <- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+             geom_point(alpha = 0.7, show.legend = FALSE) +
+             scale_colour_manual(values = country_colors) +
+             scale_size(range = c(2, 12)) +
+             scale_x_log10() +
+             facet_wrap(~continent) +
+             # Animating the plot
+             labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'Life expectancy') +
+             transition_time(year) +
+             ease_aes('linear')
+
+animate(p1)
+```
+
+
+
+]
+
+
+
+---
+
+
+
+
+
+
+class: inverse, center, middle
+background-color: #00081d
+
+.pull-left[
+
+.center[
+<br><br>
+
+# Gracias!!!
+
+<br><br><br><br><br>
+
+
+
+### ¿Preguntas?
+]
+
+
+]
+
+
+.pull-right[
+
+<img style="border-radius: 50%;" src="img/avatar.png"
+width="150px"
+/>
+
+### [www.joaquibarandica.com](https://www.joaquibarandica.com)
+`r icon("twitter")` jotajb5
+
+`r icon("github")` juniorjb5
+
+`r icon("envelope")` orlando.joaqui@correounivalle.edu.co
+
+]
+
+
+<br><br><br>
+
+----
+
+*Las imágenes utilizadas para ambientar la presentación son de [pixabay](https://pixabay.com/).*  
+Sources: Rob Kabacoff
+
