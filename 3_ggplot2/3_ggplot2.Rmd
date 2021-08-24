@@ -2995,7 +2995,7 @@ Un diagrama de caja ofrece un buen resumen de una o más variables numéricas. U
 ### Diagrama de caja o Boxplot
 
 
-<img src="img/img2.jpg" width="90%"/>
+<img src="img/img2.JPG" width="90%"/>
 
 ----
 .right[
